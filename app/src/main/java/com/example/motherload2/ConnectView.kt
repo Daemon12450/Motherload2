@@ -53,5 +53,7 @@ class ConnectView : ViewModel() {
     fun buy(){
 
         repository.buy(selectedMessage.value?.offer_id.toString())
+        //Log.d("Buy ",selectedMessage.value?.offer_id.toString())
+
     }
 }

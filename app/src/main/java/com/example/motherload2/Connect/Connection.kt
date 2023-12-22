@@ -637,12 +637,12 @@ class Connection private constructor() {
             Log.e(TAG, "Not Connected")
             return
         }
-
+        Log.d("id",id)
         val encodeses = URLEncoder.encode(this.session, "UTF-8")
         val encodesig = URLEncoder.encode(this.signature, "UTF-8")
         val encodeid = URLEncoder.encode(id, "UTF-8")
         val url =
-            BASE_URL + "/market_acheter.php?session=$encodeses&signature=$encodesig&offre_id=$encodeid"
+            BASE_URL + "/market_acheter.php?session=$encodeses&signature=$encodesig&offer_id=$encodeid"
         val stringRequest = StringRequest(
             Request.Method.GET, url,
             { response ->
