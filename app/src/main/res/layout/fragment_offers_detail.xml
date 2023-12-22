@@ -12,6 +12,8 @@
         android:orientation="vertical"
         tools:context=".View.Frag.OffersFragment">
 
+
+
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
@@ -42,6 +44,11 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+        <WebView
+            android:id="@+id/web"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

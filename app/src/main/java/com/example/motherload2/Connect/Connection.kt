@@ -26,9 +26,12 @@ class Connection private constructor() {
     private val BASE_URL = " https://test.vautard.fr/creuse_srv/"
     private lateinit var session : String
     private lateinit var signature : String
-    private var connected : Boolean = false
+    internal var connected : Boolean = false
     private val _offers = MutableLiveData<List<Offers>>()
     val offers: LiveData<List<Offers>> get() = _offers
+    private val _item = MutableLiveData<List<Item>>()
+    val item: LiveData<List<Item>> get() = _item
+
     private val oListe = ArrayList<Offers>()
 
     companion object {
@@ -285,12 +288,28 @@ class Connection private constructor() {
                             val positionNode = doc.getElementsByTagName("POSITION").item(0)
                             val pose = positionNode.textContent.trim()
                             Log.d("pose",pose)
-                            val itemsNode = doc.getElementsByTagName("ITEMS").item(0)
-                            val items = itemsNode.textContent.trim()
-                            Log.d("items",items)
-                            character.setitems(items)
 
+                            val itemsNode = doc.getElementsByTagName("ITEMS").item(0).childNodes
+                            val lastId = character.items.lastOrNull()?.id?.toInt() ?: -1
+                            for (i in 0 until itemsNode.length) {
+                                val node = itemsNode.item(i)
+                                if (node.nodeType == Node.ELEMENT_NODE) {
+                                    val elem = node as Element
+                                    val id = elem.getElementsByTagName("ITEM_ID").item(0).textContent.toInt()
+                                    if (id > lastId){
+                                        Log.d(TAG,"Id = $id plus grand que $lastId")
+                                        //val item_id = elem.getElementsByTagName("ITEM_ID").item(0).textContent
+                                        val quantity = elem.getElementsByTagName("QUANTITE").item(0).textContent
+                                        //character.addquantity(quantity)
+                                        val item = Item(id.toString())
+                                        item_detail(id.toString(),item)
+                                        character.additems(item)
+                                        item.setquantity(quantity)
 
+                                    }
+                                }
+                            }
+                            _item.postValue(character.items)
 
 
                         } else {
@@ -389,7 +408,7 @@ class Connection private constructor() {
 
                             if (itemNode != null) {
                                 val item = itemNode.textContent.trim()
-                                character.additems(item)
+                                character.additems(Item(item))
                                 Log.d("item got", item)
                             }
 
@@ -627,6 +646,61 @@ class Connection private constructor() {
         // ligne importante a ne pas oublier
         App.instance.requestQueue?.add(stringRequest)
     }
+    fun sell(id: String,quantity:String,price:String) {
+
+        /*
+        reset le joueur a 0 au niveau du serveur, il faut mettre un signal de warning afin d'éviter les miss click
+         */
+
+        if (!this.connected) {
+            // on vérifie que l'on est bien connecter au serveur et que l'on ai récupéré la session et la signature
+            Log.e(TAG, "Not Connected")
+            return
+        }
+        Log.d("id",id)
+        val encodeses = URLEncoder.encode(this.session, "UTF-8")
+        val encodesig = URLEncoder.encode(this.signature, "UTF-8")
+        val encodeid = URLEncoder.encode(id, "UTF-8")
+        val encodequantity = URLEncoder.encode(quantity, "UTF-8")
+        val encodeprice = URLEncoder.encode(price, "UTF-8")
+
+        val url =
+            BASE_URL + "/market_vendre.php?session=$encodeses&signature=$encodesig&item_id=$encodeid&quantite=$encodequantity&prix=$encodeprice"
+
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                try {val docBF: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
+                    val docBuilder: DocumentBuilder = docBF.newDocumentBuilder()
+                    val doc: Document = docBuilder.parse(response.byteInputStream())
+
+                    // On vérifie le status
+                    val statusNode = doc.getElementsByTagName("STATUS").item(0)
+                    if (statusNode != null) {
+                        val status = statusNode.textContent.trim()
+
+                        if (status == "OK") {
+
+                            Log.d(TAG, "vente succesful")
+                        } else {
+                        Log.e(TAG, "vente: Erreur - $status")
+                        // popup with market_list Error
+                    }
+
+                    }
+                }catch (e: Exception) {
+                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                }
+
+            },
+            { error ->
+                Log.d(TAG, "vente error")
+                error.printStackTrace()
+            })
+
+        App.instance.requestQueue?.add(stringRequest)
+    }
+
     fun buy(id: String) {
         /*
         reset le joueur a 0 au niveau du serveur, il faut mettre un signal de warning afin d'éviter les miss click
@@ -659,9 +733,9 @@ class Connection private constructor() {
 
                             Log.d(TAG, "achat succesful")
                         } else {
-                        Log.e(TAG, "Achat: Erreur - $status")
-                        // popup with market_list Error
-                    }
+                            Log.e(TAG, "Achat: Erreur - $status")
+                            // popup with market_list Error
+                        }
 
                     }
                 }catch (e: Exception) {

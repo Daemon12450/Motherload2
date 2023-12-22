@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,6 +20,7 @@ class OffredetailFrag : Fragment() {
     var mtypeText: TextView? = null
     var mrareText: TextView? = null
     var mdecFrText: TextView? = null
+    var web : WebView? = null
     private lateinit var connectView: ConnectView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,7 @@ class OffredetailFrag : Fragment() {
         mrareText = ret.findViewById<View>(R.id.rare) as TextView
         mtypeText = ret.findViewById<View>(R.id.type) as TextView
         mdecFrText = ret.findViewById<View>(R.id.dec) as TextView
+        web = ret.findViewById(R.id.web) as WebView
         return ret
     }
 
@@ -59,6 +62,8 @@ class OffredetailFrag : Fragment() {
         mtypeText?.text = offers.item.type
         mrareText?.text= offers.item.rarete
         mdecFrText?.text= offers.item.decFr
+        val url = "https://test.vautard.fr/creuse_imgs/" + offers.item.image
+        web?.loadUrl( url )
 
     }
 

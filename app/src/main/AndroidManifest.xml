@@ -32,6 +32,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".View.InvActivity"
+            android:exported="false">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".View.MainActivity"
             android:exported="true">
             <intent-filter>

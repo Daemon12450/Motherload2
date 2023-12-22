@@ -1,13 +1,16 @@
 package com.example.motherload2.Character
 
+import androidx.core.location.LocationRequestCompat.Quality
+
 class Item (id:String) {
     internal val id = id
     internal var nom :String =""
     internal var  type :String =""
     internal var rarete :String =""
-    private var image :String=""
+    internal var image :String=""
     internal var decFr :String =""
     private var decEn :String=""
+    internal var quantity: String = ""
 
     /*companion object {
         @Volatile
@@ -26,6 +29,7 @@ class Item (id:String) {
         this.rarete = rarete
         this.image = image
         this.decFr = decFr
+
     }
     fun setnom(nom:String){
         this.nom = nom
@@ -44,5 +48,8 @@ class Item (id:String) {
     }
     fun setdecEn(decEn:String){
         this.decEn = decEn
+    }
+    fun setquantity(quantity:String){
+        this.quantity = quantity
     }
 }

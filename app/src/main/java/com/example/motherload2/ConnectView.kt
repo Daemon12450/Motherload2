@@ -12,15 +12,24 @@ import com.example.motherload2.Connect.Connection
 
 class ConnectView : ViewModel() {
     private val repository = Connection.getInstance()
-    private val perso = Character.getInstance("1.9365061f","47.8430441f")
+    internal val perso = Character.getInstance("1.9365061f","47.8430441f")
     val marchant = Marchant.getInstance()
     val offre: LiveData<List<Offers>> = repository.offers // Directement lié au LiveData du Repository
+    val sacitem: LiveData<List<Item>> = repository.item
 
     private val _selectedoffers = MutableLiveData<Offers?>()
     val selectedMessage: LiveData<Offers?> get() = _selectedoffers
 
+    private val _selecteditem = MutableLiveData<Item?>()
+    val selectedItem: LiveData<Item?> get() = _selecteditem
+
     fun connectWeb(login: String, password: String){
         repository.ConnectWeb(login,password)
+        if (repository.connected){
+            deplacement()
+            statusplayer()
+            market()
+        }
     }
     fun getconnect():Boolean{
         return repository.getConnected()
@@ -48,12 +57,19 @@ class ConnectView : ViewModel() {
     }
     fun selectOffer(offers: Offers?){
         _selectedoffers.postValue (offers)
-        Log.d("MsgViewModel","Message sélectionné : "+offers?.offer_id)
+        Log.d("MsgViewModel","Offre sélectionné : "+offers?.offer_id)
+    }
+    fun selectItem(item: Item?){
+        _selecteditem.postValue (item)
+        Log.d("MsgViewModel","item sélectionné : "+item?.id)
     }
     fun buy(){
 
         repository.buy(selectedMessage.value?.offer_id.toString())
         //Log.d("Buy ",selectedMessage.value?.offer_id.toString())
 
+    }
+    fun sell(){
+        repository.sell(selectedItem.value?.id.toString(),"1","100")
     }
 }

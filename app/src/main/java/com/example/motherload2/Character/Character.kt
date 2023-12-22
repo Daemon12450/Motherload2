@@ -1,13 +1,19 @@
 package com.example.motherload2.Character
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+
 class Character (lon:String,lat:String) {
-    private var name : String = ""
+    internal var name : String = ""
     private var lon : String = lon
     private var lat : String = lat
     private lateinit var voisins : String
-    private lateinit var money : String
-    private lateinit var pickaxe : String
-    private lateinit var items : String
+    internal var money : String = ""
+    internal var pickaxe : String = ""
+
+    internal var Lid = listOf<String>()
+    internal var quantity = listOf<String>()
+    internal var items = listOf<Item>()
     internal val CListe = ArrayList<Voisins>()
 
     companion object {
@@ -51,14 +57,14 @@ class Character (lon:String,lat:String) {
         this.pickaxe = pick
     }
 
-    fun additems(item : String){
-        this.items += item
+    fun additems(item : Item){
+        this.items += listOf(item)
     }
 
-    fun setitems (items : String){
-        this.items = items
-    }
     fun addvoisins (voisins:Voisins){
-        this.voisins += voisins
+        this.CListe += voisins
+    }
+    fun addquantity(quantity :String){
+        this.quantity += quantity
     }
 }

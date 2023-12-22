@@ -87,14 +87,14 @@ class GameActivity : AppCompatActivity(), MapListener {
             val intent = Intent(this, ShopActivity::class.java)
             startActivity(intent)
         }
-/*
+
         val buttonInv : Button = findViewById(R.id.inv)
         buttonInv.setOnClickListener {
             val intent = Intent(this, InvActivity::class.java)
 
             startActivity(intent)
         }
-*/
+
     }
 
     override fun onResume() {
