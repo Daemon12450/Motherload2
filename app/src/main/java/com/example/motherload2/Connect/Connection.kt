@@ -11,9 +11,13 @@ import com.example.motherload2.Character.Character
 import com.example.motherload2.Character.Item
 import com.example.motherload2.Character.Marchant
 import com.example.motherload2.Character.Offers
+import com.example.motherload2.Character.Voisins
 import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
 import java.net.URLEncoder
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -200,9 +204,24 @@ class Connection private constructor() {
 
                         if (status == "OK") {
                             Log.d(TAG, "Deplacement: deplacer")
-                            val voisinsNode = doc.getElementsByTagName("VOISINS").item(0)
-                            character.setvoisins(voisinsNode.textContent.trim())
-                            Log.d("voisins",character.getvoisins())
+                            val listElementsVoisins = doc.getElementsByTagName("VOISINS").item(0).childNodes
+                            val lastId = character.CListe.lastOrNull()?.id ?: -1
+
+                            for (i in 0 until listElementsVoisins.length) {
+                                val node = listElementsVoisins.item(i)
+
+                                if (i >lastId){
+                                    Log.d(TAG,"Id = $i plus grand que $lastId")
+                                    val elem = node as Element
+                                    val name = elem.getElementsByTagName("NOM").item(0).textContent
+                                    val lon = elem.getElementsByTagName("LONGITUDE").item(0).textContent
+                                    val lat = elem.getElementsByTagName("LATITUDE").item(0).textContent
+                                    character.addvoisins(Voisins(i,name,lon,lat))
+
+                                }
+                            }
+
+
 
                         } else {
                             Log.e(TAG, "Deplacement: Erreur - $status")
@@ -402,7 +421,6 @@ class Connection private constructor() {
             Log.e(TAG, "Not Connected")
             return
         }
-
         val encodeses = URLEncoder.encode(this.session, "UTF-8")
         val encodesig = URLEncoder.encode(this.signature, "UTF-8")
         val encodeitem = URLEncoder.encode(item_id,"UTF-8")
@@ -545,8 +563,29 @@ class Connection private constructor() {
 
                         if (status == "OK") {
                             Log.d(TAG, "market_list: market_list obtained")
-                            val offersNode=doc.getElementsByTagName("OFFERS")
-                            var i = 0
+                            val offersNode=doc.getElementsByTagName("OFFERS").item(0).childNodes
+                            val lastId = marchant.items.lastOrNull()?.offer_id ?: -1
+                            for (i in 0 until offersNode.length) {
+                                val node = offersNode.item(i)
+                                if (node.nodeType == Node.ELEMENT_NODE) {
+                                    val elem = node as Element
+                                    val id = elem.getElementsByTagName("OFFER_ID").item(0).textContent.toInt()
+
+                                    if (id > lastId) {
+                                        Log.d(TAG,"Id = $id plus grand que $lastId")
+                                        val item_id = elem.getElementsByTagName("ITEM_ID").item(0).textContent
+                                        val quantity = elem.getElementsByTagName("QUANTITE").item(0).textContent
+                                        val price = elem.getElementsByTagName("PRIX").item(0).textContent
+                                        val offre = Offers(id,item_id,quantity,price)
+                                        //getname(item_id,offre)
+                                        item_detail(item_id,offre.item)
+                                        marchant.additem(offre)
+                                        //marchant.additem(Offers(id,item_id,quantity, price))
+                                    }
+                                }
+                            }
+
+                            /*
                             marchant.resetM()
                             while (i < offersNode.length){
                                 val itemNode = doc.getElementsByTagName("item$i").item(0)
@@ -570,8 +609,8 @@ class Connection private constructor() {
                                 oListe.add(offre)
                                 Log.d("marchant","succes")
                                 i += 1
-                            }
-                            _offers.postValue(oListe)
+                            }*/
+                            _offers.postValue(marchant.items)
                         } else {
                             Log.e(TAG, "market_list: Erreur - $status")
                             // popup with market_list Error
@@ -586,6 +625,55 @@ class Connection private constructor() {
                 error.printStackTrace()
             })
         // ligne importante a ne pas oublier
+        App.instance.requestQueue?.add(stringRequest)
+    }
+    fun buy(id: String) {
+        /*
+        reset le joueur a 0 au niveau du serveur, il faut mettre un signal de warning afin d'éviter les miss click
+         */
+
+        if (!this.connected) {
+            // on vérifie que l'on est bien connecter au serveur et que l'on ai récupéré la session et la signature
+            Log.e(TAG, "Not Connected")
+            return
+        }
+
+        val encodeses = URLEncoder.encode(this.session, "UTF-8")
+        val encodesig = URLEncoder.encode(this.signature, "UTF-8")
+        val encodeid = URLEncoder.encode(id, "UTF-8")
+        val url =
+            BASE_URL + "/market_acheter.php?session=$encodeses&signature=$encodesig&offre_id=$encodeid"
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                try {val docBF: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
+                    val docBuilder: DocumentBuilder = docBF.newDocumentBuilder()
+                    val doc: Document = docBuilder.parse(response.byteInputStream())
+
+                    // On vérifie le status
+                    val statusNode = doc.getElementsByTagName("STATUS").item(0)
+                    if (statusNode != null) {
+                        val status = statusNode.textContent.trim()
+
+                        if (status == "OK") {
+
+                            Log.d(TAG, "achat succesful")
+                        } else {
+                        Log.e(TAG, "Achat: Erreur - $status")
+                        // popup with market_list Error
+                    }
+
+                    }
+                }catch (e: Exception) {
+                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                }
+
+            },
+            { error ->
+                Log.d(TAG, "reinit_joueur error")
+                error.printStackTrace()
+            })
+
         App.instance.requestQueue?.add(stringRequest)
     }
 }

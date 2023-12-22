@@ -8,6 +8,7 @@ class Character (lon:String,lat:String) {
     private lateinit var money : String
     private lateinit var pickaxe : String
     private lateinit var items : String
+    internal val CListe = ArrayList<Voisins>()
 
     companion object {
         @Volatile
@@ -56,5 +57,8 @@ class Character (lon:String,lat:String) {
 
     fun setitems (items : String){
         this.items = items
+    }
+    fun addvoisins (voisins:Voisins){
+        this.voisins += voisins
     }
 }

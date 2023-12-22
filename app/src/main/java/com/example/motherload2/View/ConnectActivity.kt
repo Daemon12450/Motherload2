@@ -39,7 +39,7 @@ class ConnectActivity : AppCompatActivity() {
                 // à l'activity précédente, c'est à dire MainActivity.
                 finish()
             }
-            finish()
+            //finish()
         }
 
         val buttonname : Button = findViewById(R.id.changename)
@@ -74,7 +74,7 @@ class ConnectActivity : AppCompatActivity() {
         val buttonitem : Button = findViewById(R.id.item)
         buttonitem.setOnClickListener{
             val id = "5"// get texte id
-            val item = Item.getInstance(id)
+            val item = Item(id)
             connectView.detailitem(id,item)
         }
 

@@ -1,8 +1,10 @@
 package com.example.motherload2.View
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.motherload2.ConnectView
@@ -34,6 +36,11 @@ class ShopActivity : AppCompatActivity(){
         connectView = ViewModelProvider(this).get(ConnectView::class.java)
         offersFragmaent = supportFragmentManager.findFragmentById(R.id.mainNoteFrag) as OffersFragment?
         offersdetailFragment = supportFragmentManager.findFragmentById(R.id.maindetailFrag)as OffredetailFrag?
+
+        val connectButton : Button = findViewById(R.id.Buy)
+        connectButton.setOnClickListener {
+            connectView.buy()
+        }
     }
     override fun onResume() {
         super.onResume()

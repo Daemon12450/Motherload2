@@ -53,15 +53,13 @@ class OffredetailFrag : Fragment() {
             mdecFrText?.text=""
             return
         }
-        // faux attendre que detailitem finis
-        val item = Item.getInstance(offers.item_id)
 
-            connectView.detailitem(offers.item_id, item)
-                mnameText?.text = item.nom
-                mtypeText?.text = item.type
-                mrareText?.text = item.rarete
-                mdecFrText?.text = item.decFr
-                Log.d("fin","Fin")
+        // bidul
+        mnameText?.text = offers.item.nom
+        mtypeText?.text = offers.item.type
+        mrareText?.text= offers.item.rarete
+        mdecFrText?.text= offers.item.decFr
+
     }
 
     companion object {
