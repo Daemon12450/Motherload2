@@ -11,9 +11,13 @@ import com.example.motherload2.Character.Character
 import com.example.motherload2.Character.Item
 import com.example.motherload2.Character.Marchant
 import com.example.motherload2.Character.Offers
+import com.example.motherload2.Character.Voisins
 import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
 import java.net.URLEncoder
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -200,9 +204,24 @@ class Connection private constructor() {
 
                         if (status == "OK") {
                             Log.d(TAG, "Deplacement: deplacer")
-                            val voisinsNode = doc.getElementsByTagName("VOISINS").item(0)
-                            character.setvoisins(voisinsNode.textContent.trim())
-                            Log.d("voisins",character.getvoisins())
+                            val listElementsVoisins = doc.getElementsByTagName("VOISINS").item(0).childNodes
+                            val lastId = character.CListe.lastOrNull()?.id ?: -1
+
+                            for (i in 0 until listElementsVoisins.length) {
+                                val node = listElementsVoisins.item(i)
+
+                                if (i >lastId){
+                                    Log.d(TAG,"Id = $i plus grand que $lastId")
+                                    val elem = node as Element
+                                    val name = elem.getElementsByTagName("NOM").item(0).textContent
+                                    val lon = elem.getElementsByTagName("LONGITUDE").item(0).textContent
+                                    val lat = elem.getElementsByTagName("LATITUDE").item(0).textContent
+                                    character.addvoisins(Voisins(i,name,lon,lat))
+
+                                }
+                            }
+
+
 
                         } else {
                             Log.e(TAG, "Deplacement: Erreur - $status")
@@ -545,8 +564,28 @@ class Connection private constructor() {
 
                         if (status == "OK") {
                             Log.d(TAG, "market_list: market_list obtained")
-                            val offersNode=doc.getElementsByTagName("OFFERS")
-                            var i = 0
+                            val offersNode=doc.getElementsByTagName("OFFERS").item(0).childNodes
+                            val lastId = marchant.items.lastOrNull()?.offer_id ?: -1
+                            for (i in 0 until offersNode.length) {
+                                val node = offersNode.item(i)
+                                if (node.nodeType == Node.ELEMENT_NODE) {
+                                    val elem = node as Element
+                                    val id = elem.getElementsByTagName("OFFER_ID").item(0).textContent.toInt()
+
+                                    if (id > lastId) {
+                                        Log.d(TAG,"Id = $id plus grand que $lastId")
+                                        val item_id = elem.getElementsByTagName("ITEM_ID").item(0).textContent
+                                        val quantity = elem.getElementsByTagName("QUANTITE").item(0).textContent
+                                        val price = elem.getElementsByTagName("PRIX").item(0).textContent
+                                        val offre = Offers(id,item_id,quantity,price)
+                                        getname(item_id,offre)
+                                        marchant.additem(offre)
+                                        //marchant.additem(Offers(id,item_id,quantity, price))
+                                    }
+                                }
+                            }
+
+                            /*
                             marchant.resetM()
                             while (i < offersNode.length){
                                 val itemNode = doc.getElementsByTagName("item$i").item(0)
@@ -570,8 +609,8 @@ class Connection private constructor() {
                                 oListe.add(offre)
                                 Log.d("marchant","succes")
                                 i += 1
-                            }
-                            _offers.postValue(oListe)
+                            }*/
+                            _offers.postValue(marchant.items)
                         } else {
                             Log.e(TAG, "market_list: Erreur - $status")
                             // popup with market_list Error
