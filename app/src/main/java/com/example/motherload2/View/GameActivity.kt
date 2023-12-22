@@ -87,6 +87,10 @@ class GameActivity : AppCompatActivity(), MapListener {
             val intent = Intent(this, ShopActivity::class.java)
             startActivity(intent)
         }
+        val buttonDig : Button = findViewById(R.id.dig)
+        buttonDig.setOnClickListener {
+            connectView.dig()
+        }
 
         val buttonInv : Button = findViewById(R.id.inv)
         buttonInv.setOnClickListener {

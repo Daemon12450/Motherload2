@@ -39,6 +39,13 @@
                 android:text="Shop" />
 
             <Button
+                android:id="@+id/dig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Dig" />
+
+            <Button
                 android:id="@+id/inv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
