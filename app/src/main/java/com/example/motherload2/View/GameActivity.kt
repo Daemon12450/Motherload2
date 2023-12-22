@@ -1,33 +1,19 @@
 package com.example.motherload2.View
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.StrictMode
-import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.motherload2.ConnectView
 import com.example.motherload2.R
-import com.google.android.gms.maps.SupportMapFragment
 
 
 class GameActivity : AppCompatActivity() {
     private lateinit var connectView: ConnectView
-
-    private GoogleMap mMap;
-
-    private ActivitMapsBinding binding;
-
-    private LocationManager locationManager;
-
-    private TextView cibleTv;
 
     private val handler = Handler(Looper.getMainLooper())
     private val updateRunnable = object : Runnable {
@@ -40,31 +26,7 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
 
-        val policy = ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
 
-        binding = ActivityMapsBinding.inflate(layoutInflater)
-        setContentView(binding.getRoot())
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) && (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED)
-        ) {
-            requestPermissions(
-                arrayOf(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ),
-                1
-            )
-        }
 
         setContentView(R.layout.gameactivity)
         connectView = ViewModelProvider(this).get(ConnectView::class.java)
