@@ -50,4 +50,8 @@ class ConnectView : ViewModel() {
         _selectedoffers.postValue (offers)
         Log.d("MsgViewModel","Message sélectionné : "+offers?.offer_id)
     }
+    fun buy(){
+
+        repository.buy(selectedMessage.value?.offer_id.toString())
+    }
 }

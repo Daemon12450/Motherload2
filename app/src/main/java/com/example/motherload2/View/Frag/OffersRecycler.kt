@@ -31,13 +31,12 @@ class OffersRecycler (private val mListener: OffersFragment.OnListFragmentIntera
     // affichent le message en position 'position'.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.mItem = mValues[position]
-        holder.mnameView.text = mValues[position].name
+        holder.mnameView.text = mValues[position].item.nom
         var textContent = mValues[position].quantite
-        if (textContent.length > 50) textContent = textContent.substring(0, 47) + "..."
+        //if (textContent.length > 50) textContent = textContent.substring(0, 47) + "..."
         holder.mquantityView.text = textContent
         holder.mpriceView.text = mValues[position].prix
         holder.mView.setOnClickListener { mListener?.onListFragmentInteraction(holder.mItem) }
-
     }
 
     // Doit retourner le nombre d'élément à afficher dans la liste

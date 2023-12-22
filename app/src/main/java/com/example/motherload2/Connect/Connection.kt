@@ -421,7 +421,6 @@ class Connection private constructor() {
             Log.e(TAG, "Not Connected")
             return
         }
-
         val encodeses = URLEncoder.encode(this.session, "UTF-8")
         val encodesig = URLEncoder.encode(this.signature, "UTF-8")
         val encodeitem = URLEncoder.encode(item_id,"UTF-8")
@@ -578,7 +577,8 @@ class Connection private constructor() {
                                         val quantity = elem.getElementsByTagName("QUANTITE").item(0).textContent
                                         val price = elem.getElementsByTagName("PRIX").item(0).textContent
                                         val offre = Offers(id,item_id,quantity,price)
-                                        getname(item_id,offre)
+                                        //getname(item_id,offre)
+                                        item_detail(item_id,offre.item)
                                         marchant.additem(offre)
                                         //marchant.additem(Offers(id,item_id,quantity, price))
                                     }
@@ -625,6 +625,55 @@ class Connection private constructor() {
                 error.printStackTrace()
             })
         // ligne importante a ne pas oublier
+        App.instance.requestQueue?.add(stringRequest)
+    }
+    fun buy(id: String) {
+        /*
+        reset le joueur a 0 au niveau du serveur, il faut mettre un signal de warning afin d'éviter les miss click
+         */
+
+        if (!this.connected) {
+            // on vérifie que l'on est bien connecter au serveur et que l'on ai récupéré la session et la signature
+            Log.e(TAG, "Not Connected")
+            return
+        }
+
+        val encodeses = URLEncoder.encode(this.session, "UTF-8")
+        val encodesig = URLEncoder.encode(this.signature, "UTF-8")
+        val encodeid = URLEncoder.encode(id, "UTF-8")
+        val url =
+            BASE_URL + "/market_acheter.php?session=$encodeses&signature=$encodesig&offre_id=$encodeid"
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                try {val docBF: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
+                    val docBuilder: DocumentBuilder = docBF.newDocumentBuilder()
+                    val doc: Document = docBuilder.parse(response.byteInputStream())
+
+                    // On vérifie le status
+                    val statusNode = doc.getElementsByTagName("STATUS").item(0)
+                    if (statusNode != null) {
+                        val status = statusNode.textContent.trim()
+
+                        if (status == "OK") {
+
+                            Log.d(TAG, "achat succesful")
+                        } else {
+                        Log.e(TAG, "Achat: Erreur - $status")
+                        // popup with market_list Error
+                    }
+
+                    }
+                }catch (e: Exception) {
+                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                }
+
+            },
+            { error ->
+                Log.d(TAG, "reinit_joueur error")
+                error.printStackTrace()
+            })
+
         App.instance.requestQueue?.add(stringRequest)
     }
 }

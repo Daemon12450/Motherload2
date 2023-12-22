@@ -1,7 +1,7 @@
 package com.example.motherload2.Character
 
 class Item (id:String) {
-    private val id = id
+    internal val id = id
     internal var nom :String =""
     internal var  type :String =""
     internal var rarete :String =""
@@ -9,7 +9,7 @@ class Item (id:String) {
     internal var decFr :String =""
     private var decEn :String=""
 
-    companion object {
+    /*companion object {
         @Volatile
         private var INSTANCE: Item? = null
 
@@ -18,7 +18,7 @@ class Item (id:String) {
                 INSTANCE ?: Item(id).also { INSTANCE = it }
             }
         }
-    }
+    }*/
     fun createitem(nom:String,type:String,rarete: String,image: String,decEn: String,decFr: String){
         this.nom= nom
         this.type=type
