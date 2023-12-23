@@ -15,6 +15,9 @@ import com.example.motherload2.View.Frag.OffredetailFrag
 import com.example.motherload2.View.Frag.SacFragment
 
 class InvActivity: AppCompatActivity() {
+    /*
+    activiter qui contien linventaire du personnage
+     */
     private lateinit var connectView: ConnectView
     private var sacFragmaent : SacFragment? = null
 

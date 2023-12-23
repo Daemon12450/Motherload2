@@ -13,6 +13,10 @@ import com.example.motherload2.View.Frag.OffersFragment
 import com.example.motherload2.View.Frag.OffredetailFrag
 
 class ShopActivity : AppCompatActivity(){
+    /*
+    activite qui contien les offres du marchant permet de les acheter aussi et de voir les detail
+     */
+
     private lateinit var connectView: ConnectView
     private var offersFragmaent : OffersFragment? = null
     private var offersdetailFragment: OffredetailFrag? = null

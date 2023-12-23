@@ -26,6 +26,9 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 
 class GameActivity : AppCompatActivity(), MapListener {
+    /*
+    activiter principal du jeu qui contien la map
+     */
     private lateinit var connectView: ConnectView
     private var fragmentplus : FragmentPlus? = null
 

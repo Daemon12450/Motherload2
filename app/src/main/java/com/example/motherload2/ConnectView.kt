@@ -11,6 +11,11 @@ import com.example.motherload2.Character.Offers
 import com.example.motherload2.Connect.Connection
 
 class ConnectView : ViewModel() {
+    /*
+
+    Classe qui vas se changer de faire le lien entre les autre class et la class principal de communication avec le web
+
+     */
     private val repository = Connection.getInstance()
     internal val perso = Character.getInstance("1.9365061f","47.8430441f")
     val marchant = Marchant.getInstance()

@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
         connectButton.setOnClickListener {
             connectView.connectWeb(log.text.toString(),pass.text.toString())
             if (connectView.getconnect()) {
-                if (!checkBox.isChecked){
+                if (!checkBox.isChecked){// verifi si lutilisateur veut oublier ses log
+                    /*on ecrit dans un fichier les log + un chec quon vas verifier a louerture de lapp*/
                     val pref = getSharedPreferences("checkbox", MODE_PRIVATE)
                     val edit = pref.edit()
                     edit.putString("remember","true")
@@ -54,12 +55,14 @@ class MainActivity : AppCompatActivity() {
                     edit.putString("remember","false")
                     edit.apply()
                 }
-                // button ferme avant la fin de la verif donc faut appuyer 2 fois pour l'instant, faut faire un delay ou att que la fonction fini
+                // faut appuyer 2 fois pour l'instant, faut faire un delay ou att que la fonction fini
                 val intent = Intent(this, GameActivity::class.java)
                 startActivity(intent)
 
             }
         }
+
+        /*deux bouton qui permet de changer la langue de lapp*/
         val lang = LanguageManager(this)
         val fr : ImageButton = findViewById(R.id.Fr)
         fr.setOnClickListener{

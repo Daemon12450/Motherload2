@@ -11,6 +11,11 @@ import com.example.motherload2.ConnectView
 import com.example.motherload2.R
 
 class ConnectActivity : AppCompatActivity() {
+    /*
+    Activite de teste pour verifier que toute les
+    fonction dappel au srveur fonctionne correctement mais nest plus utiliser
+    */
+
     private lateinit var connectView: ConnectView
 
     override fun onCreate(savedInstanceState: Bundle?) {
