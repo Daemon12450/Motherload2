@@ -102,11 +102,18 @@ class GameActivity : AppCompatActivity(), MapListener {
             startActivity(intent)
         }
         fragmentplus = FragmentPlus()
+
         val buttonPlus : Button = findViewById(R.id.plus)
         buttonPlus.setOnClickListener {
+            val fragment = supportFragmentManager.findFragmentById(R.id.fragmentplus)
             val fragmentT = supportFragmentManager.beginTransaction()
-            fragmentT.add(R.id.fragmentplus, fragmentplus!!)
-            fragmentT.commit()
+            if (fragment != null){
+                fragmentT.remove(fragment)
+                fragmentT.commit()
+            }else {
+                fragmentT.add(R.id.fragmentplus, fragmentplus!!)
+                fragmentT.commit()
+            }
         }
 
     }

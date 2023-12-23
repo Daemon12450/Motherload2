@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Motherload2</string>
-    <string name="text_hello" />
+    <string name="app_name">Motherload</string>
+    <string name="changename">Change Name</string>
+    <string name="buy">Buy</string>
+    <string name="SELL">Sell</string>
+    <string name="money">Money</string>
 </resources>

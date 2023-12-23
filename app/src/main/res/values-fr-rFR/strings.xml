@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">MotherloadFr</string>
+    <string name="changename">Changer de nom</string>
+    <string name="buy">Acheter</string>
+    <string name="SELL">Vendre</string>
+    <string name="money">Argent</string>
+</resources>
