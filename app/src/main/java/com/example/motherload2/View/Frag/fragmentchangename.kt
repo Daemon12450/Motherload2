@@ -24,7 +24,7 @@ class fragmentchangename : Fragment(R.layout.fragmentname){
 
         val resetButton : Button = view.findViewById(R.id.change)
         resetButton.setOnClickListener {
-            connectView.changename(nom.getText().toString())
+            connectView.changename(nom.text.toString())
             val fragment = parentFragmentManager.findFragmentById(R.id.fragmentplus)
             val fragmentT = parentFragmentManager.beginTransaction()
             if (fragment != null) {

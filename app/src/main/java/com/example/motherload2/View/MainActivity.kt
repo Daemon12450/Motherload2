@@ -1,23 +1,64 @@
 package com.example.motherload2.View
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.SharedMemory
+import android.text.SpannableStringBuilder
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.motherload2.Connect.LanguageManager
+import com.example.motherload2.ConnectView
 import com.example.motherload2.R
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var connectView: ConnectView
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        connectView = ViewModelProvider(this).get(ConnectView::class.java)
+
         setContentView(R.layout.activity_main)
+        val log : EditText = findViewById(R.id.log)
+        val pass : EditText = findViewById(R.id.pass)
+        val pref :SharedPreferences = getSharedPreferences("checkbox", MODE_PRIVATE)
+        val chec : String? = pref.getString("remember","")
+        if (chec == "true"){
+            val login : String? = pref.getString("log","")
+            val password : String? = pref.getString("pass","")
+            log.text = SpannableStringBuilder(login)
+            pass.text = SpannableStringBuilder(password)
+        }
+
+        val checkBox : CheckBox = findViewById(R.id.checkBox)
+
+
         val connectButton : Button = findViewById(R.id.Connect)
         connectButton.setOnClickListener {
-            val intent = Intent(this, ConnectActivity::class.java)
+            connectView.connectWeb(log.text.toString(),pass.text.toString())
+            if (connectView.getconnect()) {
+                if (!checkBox.isChecked){
+                    val pref = getSharedPreferences("checkbox", MODE_PRIVATE)
+                    val edit = pref.edit()
+                    edit.putString("remember","true")
+                    edit.putString("log",log.text.toString())
+                    edit.putString("pass",pass.text.toString())
+                    edit.apply()
+                }else{
+                    val pref = getSharedPreferences("checkbox", MODE_PRIVATE)
+                    val edit = pref.edit()
+                    edit.putString("remember","false")
+                    edit.apply()
+                }
+                // button ferme avant la fin de la verif donc faut appuyer 2 fois pour l'instant, faut faire un delay ou att que la fonction fini
+                val intent = Intent(this, GameActivity::class.java)
+                startActivity(intent)
 
-            startActivity(intent)
+            }
         }
         val lang = LanguageManager(this)
         val fr : ImageButton = findViewById(R.id.Fr)

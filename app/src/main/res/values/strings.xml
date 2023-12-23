@@ -4,4 +4,7 @@
     <string name="buy">Buy</string>
     <string name="SELL">Sell</string>
     <string name="money">Money</string>
+    <string name="log">Login</string>
+    <string name="pass">Password</string>
+    <string name="forget">Forget</string>
 </resources>

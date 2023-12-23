@@ -6,4 +6,7 @@
     <string name="buy">Acheter</string>
     <string name="SELL">Vendre</string>
     <string name="money">Argent</string>
+    <string name="log">Login</string>
+    <string name="pass">Mot de pass</string>
+    <string name="forget">Oublier</string>
 </resources>
