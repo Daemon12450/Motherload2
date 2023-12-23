@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.motherload2.ConnectView
 import com.example.motherload2.R
+import com.example.motherload2.View.Frag.FragmentPlus
+import com.example.motherload2.View.Frag.SacFragment
 import com.example.motherload2.databinding.GameactivityBinding
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
@@ -25,6 +27,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class GameActivity : AppCompatActivity(), MapListener {
     private lateinit var connectView: ConnectView
+    private var fragmentplus : FragmentPlus? = null
 
     lateinit var mMap: MapView
     lateinit var controller: IMapController;
@@ -98,6 +101,13 @@ class GameActivity : AppCompatActivity(), MapListener {
 
             startActivity(intent)
         }
+        fragmentplus = FragmentPlus()
+        val buttonPlus : Button = findViewById(R.id.plus)
+        buttonPlus.setOnClickListener {
+            val fragmentT = supportFragmentManager.beginTransaction()
+            fragmentT.add(R.id.fragmentplus, fragmentplus!!)
+            fragmentT.commit()
+        }
 
     }
 
@@ -126,3 +136,5 @@ class GameActivity : AppCompatActivity(), MapListener {
         return false;
     }
 }
+
+
