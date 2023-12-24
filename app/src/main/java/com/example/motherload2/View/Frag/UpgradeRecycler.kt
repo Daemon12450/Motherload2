@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.FragmentContainer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.motherload2.Character.Item
@@ -36,6 +37,7 @@ class UpgradeRecycler(private val mListener: fragmentUpgrade.OnListFragmentInter
         holder.mItem = mValues[position]
         holder.mnameView.text = mValues[position].pick_id.toString()
 
+
         holder.mView.setOnClickListener { mListener?.onListFragmentInteraction(holder.mItem) }
 
     }
@@ -47,6 +49,7 @@ class UpgradeRecycler(private val mListener: fragmentUpgrade.OnListFragmentInter
     // du message
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mnameView: TextView
+        val items : View
 
         var mItem: Upgrades? = null
         override fun toString(): String {
@@ -54,7 +57,7 @@ class UpgradeRecycler(private val mListener: fragmentUpgrade.OnListFragmentInter
         }
 
         init {
-
+            items = mView.findViewById(R.id.Items)
             mnameView = mView.findViewById<View>(R.id.pick) as TextView
 
         }

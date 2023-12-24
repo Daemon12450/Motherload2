@@ -3,15 +3,13 @@ package com.example.motherload2.View.Frag
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.motherload2.Character.Item
-import com.example.motherload2.Character.Offers
 import com.example.motherload2.R
 
-class SacRecycler(private val mListener: SacFragment.OnListFragmentInteractionListener?)
-    : RecyclerView.Adapter<SacRecycler.ViewHolder>()  {
+class RecetteRecycler(private val mListener: Recette.OnListFragmentInteractionListener?)
+    : RecyclerView.Adapter<RecetteRecycler.ViewHolder>()  {
     private val mValues = mutableListOf<Item>()
 
     // Utiliser cette fonction pour mettre à jour la liste depuis le ViewModel
@@ -20,7 +18,7 @@ class SacRecycler(private val mListener: SacFragment.OnListFragmentInteractionLi
         mValues.addAll(newItem)
         notifyDataSetChanged()
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SacRecycler.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecetteRecycler.ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_item, parent, false)
         return ViewHolder(view)
@@ -28,7 +26,7 @@ class SacRecycler(private val mListener: SacFragment.OnListFragmentInteractionLi
     // Cette méthode est utilisée par la recyclerView pour afficher un message dans un item de la liste.
     // Il faut donc dans cette méthode mettre à jour les éléments de 'holder' de manière à ce qu'ils
     // affichent le message en position 'position'.
-    override fun onBindViewHolder(holder: SacRecycler.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecetteRecycler.ViewHolder, position: Int) {
         holder.mItem = mValues[position]
         holder.mnameView.text = mValues[position].nom
         var textContent = mValues[position].decFr

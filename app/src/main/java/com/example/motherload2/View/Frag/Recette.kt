@@ -1,7 +1,6 @@
 package com.example.motherload2.View.Frag
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,43 +13,39 @@ import com.example.motherload2.Character.Upgrades
 import com.example.motherload2.ConnectView
 import com.example.motherload2.R
 
-class fragmentUpgrade : Fragment() {
+class Recette(up : Upgrades): Fragment() {
+    private val up = up
     private val mListener: OnListFragmentInteractionListener = object :
         OnListFragmentInteractionListener {
-        override fun onListFragmentInteraction(item: Upgrades?) {connectView.selectup(item)}
+        override fun onListFragmentInteraction(item: Item?) {connectView.selectItem(item)}
     }
     interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: Upgrades?)
+        fun onListFragmentInteraction(item: Item?)
     }
-
-    private var Fragmaent : Recette? = null
-    private var litem : List<Upgrades>? = null
-    private var mAdapter: UpgradeRecycler? = null
+    private var litem : List<Item>? = null
+    private var mAdapter:RecetteRecycler? = null
     private lateinit var connectView: ConnectView
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View,savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         connectView = ViewModelProvider(requireActivity())[ConnectView::class.java]
-        connectView.upgrades.observe(viewLifecycleOwner, { item -> mAdapter?.updateUpgrades(item)
+        up.item.observe(viewLifecycleOwner, { item -> mAdapter?.updateItem(item)
         })
-        Fragmaent = parentFragmentManager.findFragmentById(R.id.Items) as Recette?
-        Log.d("teste","end")
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_upgrade, container, false)
+        val view = inflater.inflate(R.layout.fragment_sac, container, false)
 
         //mdecFrText = ret.findViewById<View>(R.id.dec) as TextView
         // définir l'adapter
-        //val view = ret.findViewById<View>(R.id.list) //as RecyclerView
+        //val view = ret.findViewById<View>(R.id.list) as RecyclerView
         if (view is RecyclerView) {
-
-            val context = view.context
+            val context = view.getContext()
             val recyclerView = view
             recyclerView.layoutManager = LinearLayoutManager(context)
             if (litem == null) litem = ArrayList()
-            if (mAdapter == null) mAdapter = UpgradeRecycler(mListener)
+            if (mAdapter == null) mAdapter = RecetteRecycler(mListener)
             recyclerView.adapter = mAdapter
         }
         return view
