@@ -13,6 +13,7 @@ import com.example.motherload2.R
 import com.example.motherload2.View.Frag.OffersFragment
 import com.example.motherload2.View.Frag.OffredetailFrag
 import com.example.motherload2.View.Frag.SacFragment
+import com.example.motherload2.View.Frag.fragmentUpgrade
 
 class InvActivity: AppCompatActivity() {
     /*
@@ -55,6 +56,20 @@ class InvActivity: AppCompatActivity() {
        val connectButton : Button = findViewById(R.id.sell)
         connectButton.setOnClickListener {
             connectView.sell()
+        }
+        val listButton : Button = findViewById(R.id.list)
+        listButton.setOnClickListener {
+            connectView.upgradelist()
+            val frag = fragmentUpgrade()
+            val fragment = supportFragmentManager.findFragmentById(R.id.pickup)
+            val fragmentT = supportFragmentManager.beginTransaction()
+            if (fragment != null){
+                fragmentT.remove(fragment)
+                fragmentT.commit()
+            }else {
+                fragmentT.add(R.id.pickup, frag!!)
+                fragmentT.commit()
+            }
         }
     }
     override fun onResume() {

@@ -11,6 +11,7 @@ import com.example.motherload2.Character.Character
 import com.example.motherload2.Character.Item
 import com.example.motherload2.Character.Marchant
 import com.example.motherload2.Character.Offers
+import com.example.motherload2.Character.Upgrades
 import com.example.motherload2.Character.Voisins
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -32,7 +33,10 @@ class Connection private constructor() {
     private val _item = MutableLiveData<List<Item>>()
     val item: LiveData<List<Item>> get() = _item
 
-    private val oListe = ArrayList<Offers>()
+    private val upgrades = ArrayList<Upgrades>()
+    private val _upgrad = MutableLiveData<List<Upgrades>>()
+    val upgrad: LiveData<List<Upgrades>> get() = _upgrad
+
 
     companion object {
         @Volatile
@@ -749,5 +753,87 @@ class Connection private constructor() {
             })
 
         App.instance.requestQueue?.add(stringRequest)
+    }
+    fun upgradelist(){
+
+        if (!this.connected) {
+            // on vérifie que l'on est bien connecté au serveur et que l'on ai récupérer la session et la signature
+            Log.e(TAG,"Not Connected")
+            return
+        }
+
+
+        val encodeses = URLEncoder.encode(this.session, "UTF-8")
+        val encodesig = URLEncoder.encode(this.signature, "UTF-8")
+
+
+        val url =
+            BASE_URL + "/recettes_pioches.php?session=$encodeses&signature=$encodesig"
+
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            { response -> // la réponse retournée par le WS si succès
+                try {
+                    val docBF: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
+                    val docBuilder: DocumentBuilder = docBF.newDocumentBuilder()
+                    val doc: Document = docBuilder.parse(response.byteInputStream())
+
+                    // On vérifie le status
+                    val statusNode = doc.getElementsByTagName("STATUS").item(0)
+                    if (statusNode != null) {
+                        val status = statusNode.textContent.trim()
+
+                        if (status == "OK") {
+                            Log.d(TAG, "Creuser: succesful list")
+                            val upNode=doc.getElementsByTagName("UPGRADES").item(0).childNodes
+                            val lastId = upgrades.lastOrNull()?.pick_id ?: -1
+                            for (i in 0 until upNode.length) {
+                                val node = upNode.item(i)
+                                Log.d("it","Pick")
+                                if (node.nodeType == Node.ELEMENT_NODE) {
+                                    val elem = node as Element
+                                    val id = elem.getElementsByTagName("PICKAXE_ID").item(0).textContent.toInt()
+                                    Log.d("idpick",id.toString())
+                                    if (id > lastId) {
+                                        val up = Upgrades(id)
+                                        val itNode = elem.getElementsByTagName("ITEMS").item(0).childNodes
+                                        val lastId2 = up.items.lastOrNull()?.id?.toInt() ?: -1
+                                        for (y in 0 until itNode.length) {
+                                            Log.d("it","item$y")
+                                            val node2 = itNode.item(y)
+                                            if (node2.nodeType == Node.ELEMENT_NODE) {
+                                                val elem2 = node2 as Element
+                                                val id2 = elem2.getElementsByTagName("ITEM_ID").item(0).textContent.toInt()
+                                                //if (id2 > lastId2) {
+                                                    val quantity = elem2.getElementsByTagName("QUANTITY").item(0).toString()
+                                                    val item = Item(id2.toString())
+                                                    item_detail(id2.toString(),item)
+                                                    up.additems(item)
+                                                    item.setquantity(quantity)
+                                                //}
+                                            }
+                                        }
+                                        this.upgrades+= up
+                                    }
+                                }
+                            }
+
+                            _upgrad.postValue(this.upgrades)
+                        } else {
+                            Log.e(TAG, "Creuser: Erreur - $status")
+                            // popup with creuser Error avec le status attaché
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                }
+            },
+            { error ->
+                Log.d(TAG, "Creuser error")
+                error.printStackTrace()
+            })
+        //
+        App.instance.requestQueue?.add(stringRequest)
+
     }
 }

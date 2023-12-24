@@ -9,6 +9,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,6 +72,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textAppearance="?attr/textAppearanceListItem" />
+
+
         </LinearLayout>
 
 
@@ -81,6 +85,11 @@
             android:name="com.example.motherload2.View.Frag.SacFragment"
             tools:layout="@layout/fragment_sac"
             />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/pickup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
 
 
@@ -90,12 +99,29 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Button" />
+
+            <Button
                 android:id="@+id/sell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="@string/SELL" />
 
+            <Button
+                android:id="@+id/list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Upgrds" />
+
         </LinearLayout>
     </LinearLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
