@@ -10,6 +10,7 @@ import com.example.motherload2.Character.Marchant
 import com.example.motherload2.Character.Offers
 import com.example.motherload2.Character.Upgrade
 import com.example.motherload2.Connect.Connection
+import com.example.motherload2.View.GameActivity
 
 class ConnectView : ViewModel() {
     /*
@@ -55,8 +56,8 @@ class ConnectView : ViewModel() {
     fun reinitplayer(){
         repository.reinit_player()
     }
-    fun dig(){
-        repository.dig(perso)
+    fun dig(game:GameActivity){
+        repository.dig(perso,game)
     }
     fun detailitem(id:String,item:Item){
         repository.item_detail(id,item)

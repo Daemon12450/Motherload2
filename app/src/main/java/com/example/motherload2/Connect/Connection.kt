@@ -2,6 +2,7 @@ package com.example.motherload2.Connect
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.android.volley.Request
@@ -13,6 +14,7 @@ import com.example.motherload2.Character.Marchant
 import com.example.motherload2.Character.Offers
 import com.example.motherload2.Character.Upgrade
 import com.example.motherload2.Character.Voisins
+import com.example.motherload2.View.GameActivity
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.Node
@@ -367,7 +369,7 @@ class Connection private constructor() {
         App.instance.requestQueue?.add(stringRequest)
     }
 
-    fun dig(character: Character){
+    fun dig(character: Character,game:GameActivity){
 
         if (!this.connected) {
             // on vérifie que l'on est bien connecté au serveur et que l'on ai récupérer la session et la signature
@@ -413,11 +415,13 @@ class Connection private constructor() {
                                 val item = itemNode.textContent.trim()
                                 character.additems(Item(item))
                                 Log.d("item got", item)
+                                Toast.makeText(game,"Item : $item",Toast.LENGTH_SHORT).show()
                             }
 
                         } else {
                             Log.e(TAG, "Creuser: Erreur - $status")
                             // popup with creuser Error avec le status attaché
+                            Toast.makeText(game,status,Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
