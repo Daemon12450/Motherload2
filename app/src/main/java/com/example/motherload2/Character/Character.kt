@@ -1,8 +1,5 @@
 package com.example.motherload2.Character
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-
 class Character (lon:String,lat:String) {
     internal var name : String = ""
     private var lon : String = lon
@@ -30,7 +27,7 @@ class Character (lon:String,lat:String) {
     fun changename(name:String){
         this.name = name
     }
-    fun changecood(lon :String,lat :String){
+    fun changecood(lon: String, lat: String){
         this.lon = lon
         this.lat = lat
     }

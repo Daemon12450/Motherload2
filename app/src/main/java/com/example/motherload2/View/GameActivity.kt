@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.motherload2.ConnectView
 import com.example.motherload2.R
 import com.example.motherload2.View.Frag.FragmentPlus
-import com.example.motherload2.View.Frag.SacFragment
 import com.example.motherload2.databinding.GameactivityBinding
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
@@ -20,21 +19,23 @@ import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
 import org.osmdroid.events.ZoomEvent
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
-
 class GameActivity : AppCompatActivity(), MapListener {
     /*
-    activiter principal du jeu qui contien la map
+    activitée principale du jeu qui contient la map
      */
     private lateinit var connectView: ConnectView
     private var fragmentplus : FragmentPlus? = null
 
-    lateinit var mMap: MapView
+    lateinit var mMap: MapView;
     lateinit var controller: IMapController;
     lateinit var mMyLocationOverlay: MyLocationNewOverlay;
+    private var myLocationMarker: Marker? = null
 
     private val handler = Handler(Looper.getMainLooper())
     private val updateRunnable = object : Runnable {
@@ -57,6 +58,7 @@ class GameActivity : AppCompatActivity(), MapListener {
             applicationContext,
             getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE)
         )
+
         mMap = binding.mapView
         mMap.setTileSource(TileSourceFactory.MAPNIK)
         mMap.mapCenter
@@ -76,7 +78,7 @@ class GameActivity : AppCompatActivity(), MapListener {
             }
         }
 
-        controller.setZoom(6.0)
+        controller.setZoom(16.0)
 
         Log.e("TAG", "onCreate:in ${controller.zoomIn()}")
         Log.e("TAG", "onCreate: out  ${controller.zoomOut()}")
@@ -110,7 +112,7 @@ class GameActivity : AppCompatActivity(), MapListener {
         buttonPlus.setOnClickListener {
             val fragment = supportFragmentManager.findFragmentById(R.id.fragmentplus)
             val fragmentT = supportFragmentManager.beginTransaction()
-            if (fragment != null){
+            if (fragment != null) {
                 fragmentT.remove(fragment)
                 fragmentT.commit()
             }else {
@@ -118,11 +120,37 @@ class GameActivity : AppCompatActivity(), MapListener {
                 fragmentT.commit()
             }
         }
+    }
 
+    private fun addMyLocationMarker(latitude: Double, longitude: Double) {
+        val startPoint = GeoPoint(latitude, longitude)
+
+        if (myLocationMarker == null) {
+            myLocationMarker = Marker(mMap)
+            myLocationMarker!!.position = startPoint
+            myLocationMarker!!.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            mMap.overlays.add(myLocationMarker)
+        } else {
+            myLocationMarker!!.position = startPoint
+        }
+        mMap.invalidate()
+
+        connectView.perso.changecood(longitude.toString(), latitude.toString())
     }
 
     override fun onResume() {
         super.onResume()
+
+        mMyLocationOverlay.runOnFirstFix {
+            runOnUiThread {
+                controller.setCenter(mMyLocationOverlay.myLocation)
+                controller.animateTo(mMyLocationOverlay.myLocation)
+
+                // Ajouter le marqueur avec vos coordonnées
+                addMyLocationMarker(mMyLocationOverlay.myLocation.latitude, mMyLocationOverlay.myLocation.longitude)
+            }
+        }
+
         // L'activity repasse en avant plan : on relance la mise à jour des messages
         handler.post(updateRunnable)
     }
@@ -130,6 +158,10 @@ class GameActivity : AppCompatActivity(), MapListener {
     override fun onPause() {
         // L'activity passe en arrière-plan : on coupe la mise à jour des messages :
         // Pour ce faire, on vire de la file d'attente le job qui était posté.
+
+        // Le marqueur est supprimé car la carte n'est pas actuellement affiché
+        removeMyLocationMarker()
+
         handler.removeCallbacks(updateRunnable)
         super.onPause()
     }
@@ -145,6 +177,12 @@ class GameActivity : AppCompatActivity(), MapListener {
         Log.e("TAG", "onZoom zoom level: ${event?.zoomLevel}   source:  ${event?.source}")
         return false;
     }
+
+    private fun removeMyLocationMarker() {
+        if (myLocationMarker != null) {
+            mMap.overlays.remove(myLocationMarker)
+            myLocationMarker = null
+            mMap.invalidate()
+        }
+    }
 }
-
-
