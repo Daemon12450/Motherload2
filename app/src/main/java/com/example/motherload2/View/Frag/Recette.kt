@@ -9,11 +9,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.motherload2.Character.Item
-import com.example.motherload2.Character.Upgrades
+import com.example.motherload2.Character.Upgrade
 import com.example.motherload2.ConnectView
 import com.example.motherload2.R
 
-class Recette(up : Upgrades): Fragment() {
+class Recette(up : Upgrade): Fragment() {
     private val up = up
     private val mListener: OnListFragmentInteractionListener = object :
         OnListFragmentInteractionListener {

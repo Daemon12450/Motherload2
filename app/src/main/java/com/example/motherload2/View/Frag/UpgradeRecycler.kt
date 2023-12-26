@@ -1,25 +1,20 @@
 package com.example.motherload2.View.Frag
 
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.FragmentContainer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.motherload2.Character.Item
-import com.example.motherload2.Character.Upgrades
-import com.example.motherload2.ConnectView
+import com.example.motherload2.Character.Upgrade
 import com.example.motherload2.R
 
 class UpgradeRecycler(private val mListener: fragmentUpgrade.OnListFragmentInteractionListener?)
     : RecyclerView.Adapter<UpgradeRecycler.ViewHolder>() {
-    private val mValues = mutableListOf<Upgrades>()
+    private val mValues = mutableListOf<Upgrade>()
 
     // Utiliser cette fonction pour mettre à jour la liste depuis le ViewModel
-    fun updateUpgrades(newItem: List<Upgrades>) {
+    fun updateUpgrades(newItem: List<Upgrade>) {
         mValues.clear()
         mValues.addAll(newItem)
         notifyDataSetChanged()
@@ -51,7 +46,7 @@ class UpgradeRecycler(private val mListener: fragmentUpgrade.OnListFragmentInter
         val mnameView: TextView
         val items : View
 
-        var mItem: Upgrades? = null
+        var mItem: Upgrade? = null
         override fun toString(): String {
             return super.toString() + " '" + mnameView.text + "'"
         }

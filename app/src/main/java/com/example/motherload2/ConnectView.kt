@@ -8,7 +8,7 @@ import com.example.motherload2.Character.Character
 import com.example.motherload2.Character.Item
 import com.example.motherload2.Character.Marchant
 import com.example.motherload2.Character.Offers
-import com.example.motherload2.Character.Upgrades
+import com.example.motherload2.Character.Upgrade
 import com.example.motherload2.Connect.Connection
 
 class ConnectView : ViewModel() {
@@ -22,15 +22,15 @@ class ConnectView : ViewModel() {
     val marchant = Marchant.getInstance()
     val offre: LiveData<List<Offers>> = repository.offers // Directement lié au LiveData du Repository
     val sacitem: LiveData<List<Item>> = repository.item
-    val upgrades: LiveData<List<Upgrades>> = repository.upgrad
+    val upgrade: LiveData<List<Upgrade>> = repository.upgrad
 
     private val _selectedoffers = MutableLiveData<Offers?>()
     val selectedMessage: LiveData<Offers?> get() = _selectedoffers
 
     private val _selecteditem = MutableLiveData<Item?>()
     val selectedItem: LiveData<Item?> get() = _selecteditem
-    private val _selectedup = MutableLiveData<Upgrades?>()
-    val selectedup: LiveData<Upgrades?> get() = _selectedup
+    private val _selectedup = MutableLiveData<Upgrade?>()
+    val selectedup: LiveData<Upgrade?> get() = _selectedup
 
     fun connectWeb(login: String, password: String){
         repository.ConnectWeb(login,password)
@@ -72,7 +72,7 @@ class ConnectView : ViewModel() {
         _selecteditem.postValue (item)
         Log.d("MsgViewModel","item sélectionné : "+item?.id)
     }
-    fun selectup(item: Upgrades?){
+    fun selectup(item: Upgrade?){
         _selectedup.postValue (item)
         Log.d("MsgViewModel","item sélectionné : "+item?.pick_id)
     }

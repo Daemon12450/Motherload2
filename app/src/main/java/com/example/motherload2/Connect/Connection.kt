@@ -11,14 +11,13 @@ import com.example.motherload2.Character.Character
 import com.example.motherload2.Character.Item
 import com.example.motherload2.Character.Marchant
 import com.example.motherload2.Character.Offers
-import com.example.motherload2.Character.Upgrades
+import com.example.motherload2.Character.Upgrade
 import com.example.motherload2.Character.Voisins
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import java.net.URLEncoder
 import java.security.MessageDigest
-import java.text.SimpleDateFormat
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -33,9 +32,9 @@ class Connection private constructor() {
     private val _item = MutableLiveData<List<Item>>()
     val item: LiveData<List<Item>> get() = _item
 
-    private val upgrades = ArrayList<Upgrades>()
-    private val _upgrad = MutableLiveData<List<Upgrades>>()
-    val upgrad: LiveData<List<Upgrades>> get() = _upgrad
+    private val upgrades = ArrayList<Upgrade>()
+    private val _upgrad = MutableLiveData<List<Upgrade>>()
+    val upgrad: LiveData<List<Upgrade>> get() = _upgrad
 
 
     companion object {
@@ -795,7 +794,7 @@ class Connection private constructor() {
                                     val id = elem.getElementsByTagName("PICKAXE_ID").item(0).textContent.toInt()
                                     Log.d("idpick",id.toString())
                                     if (id > lastId) {
-                                        val up = Upgrades(id)
+                                        val up = Upgrade(id)
                                         val itNode = elem.getElementsByTagName("ITEMS").item(0).childNodes
                                         val lastId2 = up.items.lastOrNull()?.id?.toInt() ?: -1
                                         for (y in 0 until itNode.length) {

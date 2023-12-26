@@ -9,29 +9,28 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.motherload2.Character.Item
-import com.example.motherload2.Character.Upgrades
+import com.example.motherload2.Character.Upgrade
 import com.example.motherload2.ConnectView
 import com.example.motherload2.R
 
 class fragmentUpgrade : Fragment() {
     private val mListener: OnListFragmentInteractionListener = object :
         OnListFragmentInteractionListener {
-        override fun onListFragmentInteraction(item: Upgrades?) {connectView.selectup(item)}
+        override fun onListFragmentInteraction(item: Upgrade?) {connectView.selectup(item)}
     }
     interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: Upgrades?)
+        fun onListFragmentInteraction(item: Upgrade?)
     }
 
     private var Fragmaent : Recette? = null
-    private var litem : List<Upgrades>? = null
+    private var litem : List<Upgrade>? = null
     private var mAdapter: UpgradeRecycler? = null
     private lateinit var connectView: ConnectView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         connectView = ViewModelProvider(requireActivity())[ConnectView::class.java]
-        connectView.upgrades.observe(viewLifecycleOwner, { item -> mAdapter?.updateUpgrades(item)
+        connectView.upgrade.observe(viewLifecycleOwner, { item -> mAdapter?.updateUpgrades(item)
         })
         Fragmaent = parentFragmentManager.findFragmentById(R.id.Items) as Recette?
         Log.d("teste","end")

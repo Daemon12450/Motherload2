@@ -3,7 +3,7 @@ package com.example.motherload2.Character
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class Upgrades(id:Int) {
+class Upgrade(id:Int) {
 
     internal val pick_id = id
     internal var items = listOf<Item>()
