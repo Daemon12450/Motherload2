@@ -55,8 +55,8 @@ class ConnectView : ViewModel() {
     fun reinitplayer(){
         repository.reinit_player()
     }
-    fun dig(game:GameActivity){
-        repository.dig(perso,game)
+    fun dig(game: GameActivity){
+        repository.dig(perso)
     }
     fun detailitem(id:String,item:Item){
         repository.item_detail(id,item)

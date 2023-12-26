@@ -1,6 +1,7 @@
 package com.example.motherload2.View
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
@@ -8,6 +9,8 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.motherload2.ConnectView
 import com.example.motherload2.R
@@ -30,7 +33,7 @@ class GameActivity : AppCompatActivity(), MapListener {
     activitée principale du jeu qui contient la map
      */
     private lateinit var connectView: ConnectView
-    private var fragmentplus : FragmentPlus? = null
+    private var fragmentplus: FragmentPlus? = null
 
     lateinit var mMap: MapView;
     lateinit var controller: IMapController;
@@ -45,7 +48,11 @@ class GameActivity : AppCompatActivity(), MapListener {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?){
+    companion object {
+        private const val MY_PERMISSIONS_REQUEST_LOCATION = 1
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.gameactivity)
@@ -59,11 +66,69 @@ class GameActivity : AppCompatActivity(), MapListener {
             getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE)
         )
 
+        requestLocationPermission()
+
         mMap = binding.mapView
         mMap.setTileSource(TileSourceFactory.MAPNIK)
         mMap.setMultiTouchControls(true)
         mMap.getLocalVisibleRect(Rect())
 
+        initializeLocation()
+
+        //Log.d("same ?",connectView.getconnect().toString())
+
+        val buttonShop: Button = findViewById(R.id.shop)
+        buttonShop.setOnClickListener {
+            val intent = Intent(this, ShopActivity::class.java)
+            startActivity(intent)
+        }
+
+        val buttonDig: Button = findViewById(R.id.dig)
+        buttonDig.setOnClickListener {
+            connectView.dig(this)
+        }
+
+        val buttonInv: Button = findViewById(R.id.inv)
+        buttonInv.setOnClickListener {
+            val intent = Intent(this, InvActivity::class.java)
+
+            startActivity(intent)
+        }
+        fragmentplus = FragmentPlus()
+
+        val buttonPlus: Button = findViewById(R.id.plus)
+        buttonPlus.setOnClickListener {
+            val fragment = supportFragmentManager.findFragmentById(R.id.fragmentplus)
+            val fragmentT = supportFragmentManager.beginTransaction()
+            if (fragment != null) {
+                fragmentT.remove(fragment)
+                fragmentT.commit()
+            } else {
+                fragmentT.add(R.id.fragmentplus, fragmentplus!!)
+                fragmentT.commit()
+            }
+        }
+
+        Log.d("TAG", "onCreate: mMap initialized")
+    }
+
+    private fun requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            initializeLocation()
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                MY_PERMISSIONS_REQUEST_LOCATION
+            )
+        }
+    }
+
+    private fun initializeLocation() {
         mMyLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(this), mMap)
 
         controller = mMap.controller
@@ -80,49 +145,13 @@ class GameActivity : AppCompatActivity(), MapListener {
 
         controller.setZoom(16.0)
 
-       // Log.e("TAG", "onCreate:in ${controller.zoomIn()}")
-       // Log.e("TAG", "onCreate: out  ${controller.zoomOut()}")
+        // Log.e("TAG", "onCreate:in ${controller.zoomIn()}")
+        // Log.e("TAG", "onCreate: out  ${controller.zoomOut()}")
 
         // controller.animateTo(mapPoint)
         mMap.overlays.add(mMyLocationOverlay)
 
         mMap.addMapListener(this)
-
-        //Log.d("same ?",connectView.getconnect().toString())
-
-        val buttonShop : Button = findViewById(R.id.shop)
-        buttonShop.setOnClickListener {
-            val intent = Intent(this, ShopActivity::class.java)
-            startActivity(intent)
-        }
-
-        val buttonDig : Button = findViewById(R.id.dig)
-        buttonDig.setOnClickListener {
-            connectView.dig(this)
-        }
-
-        val buttonInv : Button = findViewById(R.id.inv)
-        buttonInv.setOnClickListener {
-            val intent = Intent(this, InvActivity::class.java)
-
-            startActivity(intent)
-        }
-        fragmentplus = FragmentPlus()
-
-        val buttonPlus : Button = findViewById(R.id.plus)
-        buttonPlus.setOnClickListener {
-            val fragment = supportFragmentManager.findFragmentById(R.id.fragmentplus)
-            val fragmentT = supportFragmentManager.beginTransaction()
-            if (fragment != null) {
-                fragmentT.remove(fragment)
-                fragmentT.commit()
-            }else {
-                fragmentT.add(R.id.fragmentplus, fragmentplus!!)
-                fragmentT.commit()
-            }
-        }
-
-        Log.d("TAG", "onCreate: mMap initialized")
     }
 
     private fun addMyLocationMarker(latitude: Double, longitude: Double) {
@@ -152,9 +181,15 @@ class GameActivity : AppCompatActivity(), MapListener {
                 controller.animateTo(mMyLocationOverlay.myLocation)
 
                 // Ajouter le marqueur avec vos coordonnées
-                addMyLocationMarker(mMyLocationOverlay.myLocation.latitude, mMyLocationOverlay.myLocation.longitude)
+                addMyLocationMarker(
+                    mMyLocationOverlay.myLocation.latitude,
+                    mMyLocationOverlay.myLocation.longitude
+                )
 
-                Log.d("TAG", "addMyLocationMarker: ${mMyLocationOverlay.myLocation.latitude}, ${mMyLocationOverlay.myLocation.longitude}")
+                Log.d(
+                    "TAG",
+                    "addMyLocationMarker: ${mMyLocationOverlay.myLocation.latitude}, ${mMyLocationOverlay.myLocation.longitude}"
+                )
             }
         }
 
@@ -178,8 +213,8 @@ class GameActivity : AppCompatActivity(), MapListener {
     }
 
     override fun onScroll(event: ScrollEvent?): Boolean {
-       // Log.e("TAG", "onCreate:la ${event?.source?.getMapCenter()?.latitude}")
-       // Log.e("TAG", "onCreate:lo ${event?.source?.getMapCenter()?.longitude}")
+        // Log.e("TAG", "onCreate:la ${event?.source?.getMapCenter()?.latitude}")
+        // Log.e("TAG", "onCreate:lo ${event?.source?.getMapCenter()?.longitude}")
         //  Log.e("TAG", "onScroll   x: ${event?.x}  y: ${event?.y}", )
         return true
 
@@ -187,7 +222,7 @@ class GameActivity : AppCompatActivity(), MapListener {
     }
 
     override fun onZoom(event: ZoomEvent?): Boolean {
-      //  Log.e("TAG", "onZoom zoom level: ${event?.zoomLevel}   source:  ${event?.source}")
+        //  Log.e("TAG", "onZoom zoom level: ${event?.zoomLevel}   source:  ${event?.source}")
         return false;
 
         Log.d("TAG", "onZoom: fonction utilisé")
@@ -201,5 +236,23 @@ class GameActivity : AppCompatActivity(), MapListener {
         }
 
         Log.d("TAG", "removeMyLocationMarker: fonction utilisé")
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_LOCATION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission accordée, initialisez la localisation
+                    initializeLocation()
+                }
+                return
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
