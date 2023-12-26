@@ -1,7 +1,6 @@
 package com.example.motherload2.Connect
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.android.volley.Request
@@ -71,28 +70,28 @@ class Connection private constructor() {
                         val status = statusNode.textContent.trim()
 
                         if (status == "OK") {
-                            Log.d(TAG, "Connection: Log with succes")
+                            //Log.d(TAG, "Connection: Log with succes")
                             val sessionNode = doc.getElementsByTagName("SESSION").item(0)
                             val signatureNode = doc.getElementsByTagName("SIGNATURE").item(0)
                             this.session = sessionNode.textContent.trim()
                             this.signature = signatureNode.textContent.trim()
                             this.connected = true
-                            Log.d("signature",this.signature)
-                            Log.d("session",this.session)
+                            //Log.d("signature",this.signature)
+                            //Log.d("session",this.session)
 
 
 
                         } else {
-                            Log.e(TAG, "Connection: Erreur - $status")
+                            //Log.e(TAG, "Connection: Erreur - $status")
                             // popup with status Error
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
             },
             { error ->
-                Log.d(TAG, "Connection error")
+                //Log.d(TAG, "Connection error")
                 error.printStackTrace()
             })
         // ligne importante a ne pas oublier
@@ -126,7 +125,7 @@ class Connection private constructor() {
          */
 
         if (!this.connected) {// on vérifie que l'on est bien connecter au serveur et que l'on ai récupérer la session et la signature
-            Log.e(TAG,"Not Connected")
+            //Log.e(TAG,"Not Connected")
             return
         }
 
@@ -149,22 +148,22 @@ class Connection private constructor() {
                         val status = statusNode.textContent.trim()
 
                         if (status == "OK") {
-                            Log.d(TAG, "Changename: Name Changed")
+                            //Log.d(TAG, "Changename: Name Changed")
                             perso.changename(name)
 
 
 
                         } else {
-                            Log.e(TAG, "Changename: Erreur - $status")
+                            //Log.e(TAG, "Changename: Erreur - $status")
                             // popup with Changename Error
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
             },
             { error ->
-                Log.d(TAG, "Changename error")
+                //Log.d(TAG, "Changename error")
                 error.printStackTrace()
             })
         // ligne importante a ne pas oublier
@@ -180,7 +179,7 @@ class Connection private constructor() {
 
         if (!this.connected) {
             // on vérifie que l'on soit bien connecté au serveur, que l'on ai récupérer la session et la signature
-            Log.e(TAG,"Not Connected")
+            //Log.e(TAG,"Not Connected")
             return
         }
 
@@ -209,7 +208,7 @@ class Connection private constructor() {
                         val status = statusNode.textContent.trim()
 
                         if (status == "OK") {
-                            Log.d(TAG, "Deplacement: deplacer")
+                            //Log.d(TAG, "Deplacement: deplacer")
                             val listElementsVoisins = doc.getElementsByTagName("VOISINS").item(0).childNodes
                             val lastId = character.CListe.lastOrNull()?.id ?: -1
 
@@ -217,7 +216,7 @@ class Connection private constructor() {
                                 val node = listElementsVoisins.item(i)
 
                                 if (i >lastId){
-                                    Log.d(TAG,"Id = $i plus grand que $lastId")
+                                    //Log.d(TAG,"Id = $i plus grand que $lastId")
                                     val elem = node as Element
                                     val name = elem.getElementsByTagName("NOM").item(0).textContent
                                     val lon = elem.getElementsByTagName("LONGITUDE").item(0).textContent
@@ -230,16 +229,16 @@ class Connection private constructor() {
 
 
                         } else {
-                            Log.e(TAG, "Deplacement: Erreur - $status")
+                            //Log.e(TAG, "Deplacement: Erreur - $status")
                             // popup with Deplacement Error
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
             },
             { error ->
-                Log.d(TAG, "Deplacement error")
+                //Log.d(TAG, "Deplacement error")
                 error.printStackTrace()
             })
         // ligne importante a ne pas oublier
@@ -254,7 +253,7 @@ class Connection private constructor() {
 
         if (!this.connected) {
             // on vérifie que l'on est bien connecter au serveur et que l'on ai récupérer la session et la signature
-            Log.e(TAG,"Not Connected")
+            //Log.e(TAG,"Not Connected")
             return
         }
 
@@ -278,19 +277,19 @@ class Connection private constructor() {
                         val status = statusNode.textContent.trim()
 
                         if (status == "OK") {
-                            Log.d(TAG, "Status_joueur: Status obtenu")
+                            //Log.d(TAG, "Status_joueur: Status obtenu")
                                                                                             // PAS FINI
                             val moneyNode = doc.getElementsByTagName("MONEY").item(0)
                             val money = moneyNode.textContent.trim()
-                            Log.d("items",money)
+                            //Log.d("items",money)
                             character.setmoney(money)
                             val pickNode = doc.getElementsByTagName("PICKAXE").item(0)
                             val pick = pickNode.textContent.trim()
                             character.setpick(pick)
-                            Log.d("pick",pick)
+                            //Log.d("pick",pick)
                             val positionNode = doc.getElementsByTagName("POSITION").item(0)
                             val pose = positionNode.textContent.trim()
-                            Log.d("pose",pose)
+                            //Log.d("pose",pose)
 
                             val itemsNode = doc.getElementsByTagName("ITEMS").item(0).childNodes
                             val lastId = character.items.lastOrNull()?.id?.toInt() ?: -1
@@ -300,7 +299,7 @@ class Connection private constructor() {
                                     val elem = node as Element
                                     val id = elem.getElementsByTagName("ITEM_ID").item(0).textContent.toInt()
                                     if (id > lastId){
-                                        Log.d(TAG,"Id = $id plus grand que $lastId")
+                                        //Log.d(TAG,"Id = $id plus grand que $lastId")
                                         //val item_id = elem.getElementsByTagName("ITEM_ID").item(0).textContent
                                         val quantity = elem.getElementsByTagName("QUANTITE").item(0).textContent
                                         //character.addquantity(quantity)
@@ -316,16 +315,16 @@ class Connection private constructor() {
 
 
                         } else {
-                            Log.e(TAG, "status_joueur: Erreur - $status")
+                            //Log.e(TAG, "status_joueur: Erreur - $status")
                             // popup with Deplacement Error
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
             },
             { error ->
-                Log.d(TAG, "status_joueur error")
+                //Log.d(TAG, "status_joueur error")
                 error.printStackTrace()
             })
 
@@ -340,7 +339,7 @@ class Connection private constructor() {
 
         if (!this.connected) {
             // on vérifie que l'on est bien connecter au serveur et que l'on ai récupéré la session et la signature
-            Log.e(TAG, "Not Connected")
+            //Log.e(TAG, "Not Connected")
             return
         }
 
@@ -353,14 +352,14 @@ class Connection private constructor() {
             Request.Method.GET, url,
             { response ->
                 try {
-                    Log.d(TAG, "reset succesful")
+                    //Log.d(TAG, "reset succesful")
                 }catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
 
             },
             { error ->
-                Log.d(TAG, "reinit_joueur error")
+                //Log.d(TAG, "reinit_joueur error")
                 error.printStackTrace()
             })
 
@@ -371,7 +370,7 @@ class Connection private constructor() {
 
         if (!this.connected) {
             // on vérifie que l'on est bien connecté au serveur et que l'on ai récupérer la session et la signature
-            Log.e(TAG,"Not Connected")
+            //Log.e(TAG,"Not Connected")
             return
         }
 
@@ -400,32 +399,32 @@ class Connection private constructor() {
                         val status = statusNode.textContent.trim()
 
                         if (status == "OK") {
-                            Log.d(TAG, "Creuser: succesful dig")
+                            //Log.d(TAG, "Creuser: succesful dig")
                             val voisinsNode = doc.getElementsByTagName("VOISINS").item(0)
                             character.setvoisins(voisinsNode.textContent.trim())
-                            Log.d("voisins",character.getvoisins())
+                           // Log.d("voisins",character.getvoisins())
                             val dethNode = doc.getElementsByTagName("DEPTH").item(0)
                             val deth = dethNode.textContent.trim()
-                            Log.d("Deth",deth)
+                            //Log.d("Deth",deth)
                             val itemNode = doc.getElementsByTagName("ITEM_ID").item(0)
 
                             if (itemNode != null) {
                                 val item = itemNode.textContent.trim()
                                 character.additems(Item(item))
-                                Log.d("item got", item)
+                                //Log.d("item got", item)
                             }
 
                         } else {
-                            Log.e(TAG, "Creuser: Erreur - $status")
+                            //Log.e(TAG, "Creuser: Erreur - $status")
                             // popup with creuser Error avec le status attaché
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
             },
             { error ->
-                Log.d(TAG, "Creuser error")
+               // Log.d(TAG, "Creuser error")
                 error.printStackTrace()
             })
         // ligne importante a ne pas oublier
@@ -440,7 +439,7 @@ class Connection private constructor() {
 
         if (!this.connected) {
             // on vérifie que l'on est bien connecté au serveur et que l'on ai récupéré la session et la signature
-            Log.e(TAG, "Not Connected")
+            //Log.e(TAG, "Not Connected")
             return
         }
         val encodeses = URLEncoder.encode(this.session, "UTF-8")
@@ -463,43 +462,43 @@ class Connection private constructor() {
                         val status = statusNode.textContent.trim()
 
                         if (status == "OK") {
-                            Log.d(TAG, "Detail: detail obtenu")
+                            //Log.d(TAG, "Detail: detail obtenu")
                             val nomNode = doc.getElementsByTagName("NOM").item(0)
                             val nom = nomNode.textContent.trim()
-                            Log.d("detail_item",nom)
+                            //Log.d("detail_item",nom)
                             item.setnom(nom)
                             val typeNode = doc.getElementsByTagName("TYPE").item(0)
                             val type = typeNode.textContent.trim()
-                            Log.d("detail_item",type)
+                           // Log.d("detail_item",type)
                             item.settype(type)
                             val rareteNode = doc.getElementsByTagName("RARETE").item(0)
                             val rarete = rareteNode.textContent.trim()
-                            Log.d("detail_item",rarete)
+                           // Log.d("detail_item",rarete)
                             item.setrarete(rarete)
                             val imageNode = doc.getElementsByTagName("IMAGE").item(0)
                             val image = imageNode.textContent.trim()
-                            Log.d("detail_item",image)
+                           // Log.d("detail_item",image)
                             item.setimage(image)
                             val decFrNode = doc.getElementsByTagName("DESC_FR").item(0)
                             val decFr = decFrNode.textContent.trim()
-                            Log.d("detail_item",decFr)
+                           // Log.d("detail_item",decFr)
                             item.setdecFr(decFr)
                             val decEnNode = doc.getElementsByTagName("DESC_EN").item(0)
                             val decEn = decEnNode.textContent.trim()
-                            Log.d("detail_item",decEn)
+                           // Log.d("detail_item",decEn)
                             item.setdecEn(decEn)
                         } else {
-                        Log.e(TAG, "item detail: Erreur - $status")
+                        //Log.e(TAG, "item detail: Erreur - $status")
                         // popup with detail Error avec le status attaché
                         }
                     }
                 }catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
 
             },
             { error ->
-                Log.d(TAG, "item detail error")
+                //Log.d(TAG, "item detail error")
                 error.printStackTrace()
             })
 
@@ -509,7 +508,7 @@ class Connection private constructor() {
     fun getname(item_id: String,offers: Offers){
         if (!this.connected) {
             // on vérifie que l'on est bien connecté au serveur et que l'on ai récupéré la session et la signature
-            Log.e(TAG, "Not Connected")
+            //Log.e(TAG, "Not Connected")
             return
         }
 
@@ -533,23 +532,23 @@ class Connection private constructor() {
                         val status = statusNode.textContent.trim()
 
                         if (status == "OK") {
-                            Log.d(TAG, "Detail: detail obtenu")
+                            //Log.d(TAG, "Detail: detail obtenu")
                             val nomNode = doc.getElementsByTagName("NOM").item(0)
                             nom = nomNode.textContent.trim()
-                            Log.d("detail_item",nom)
+                            //Log.d("detail_item",nom)
                             offers.setname(nom)
                         } else {
-                            Log.e(TAG, "item detail: Erreur - $status")
+                            //Log.e(TAG, "item detail: Erreur - $status")
                             // popup with detail Error avec le status attaché
                         }
                     }
                 }catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
 
             },
             { error ->
-                Log.d(TAG, "item detail error")
+                //Log.d(TAG, "item detail error")
                 error.printStackTrace()
             })
         App.instance.requestQueue?.add(stringRequest)
@@ -561,7 +560,7 @@ class Connection private constructor() {
          */
 
         if (!this.connected) {// on vérifie que l'on est bien connecté au serveur et que l'on ai récupéré la session et la signature
-            Log.e(TAG,"Not Connected")
+            //Log.e(TAG,"Not Connected")
             return
         }
 
@@ -584,7 +583,7 @@ class Connection private constructor() {
                         val status = statusNode.textContent.trim()
 
                         if (status == "OK") {
-                            Log.d(TAG, "market_list: market_list obtained")
+                           // Log.d(TAG, "market_list: market_list obtained")
                             val offersNode=doc.getElementsByTagName("OFFERS").item(0).childNodes
                             val lastId = marchant.items.lastOrNull()?.offer_id ?: -1
                             for (i in 0 until offersNode.length) {
@@ -594,7 +593,7 @@ class Connection private constructor() {
                                     val id = elem.getElementsByTagName("OFFER_ID").item(0).textContent.toInt()
 
                                     if (id > lastId) {
-                                        Log.d(TAG,"Id = $id plus grand que $lastId")
+                                       // Log.d(TAG,"Id = $id plus grand que $lastId")
                                         val item_id = elem.getElementsByTagName("ITEM_ID").item(0).textContent
                                         val quantity = elem.getElementsByTagName("QUANTITE").item(0).textContent
                                         val price = elem.getElementsByTagName("PRIX").item(0).textContent
@@ -634,16 +633,16 @@ class Connection private constructor() {
                             }*/
                             _offers.postValue(marchant.items)
                         } else {
-                            Log.e(TAG, "market_list: Erreur - $status")
+                            //Log.e(TAG, "market_list: Erreur - $status")
                             // popup with market_list Error
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
             },
             { error ->
-                Log.d(TAG, "market_list error")
+                //Log.d(TAG, "market_list error")
                 error.printStackTrace()
             })
         // ligne importante a ne pas oublier
@@ -657,10 +656,10 @@ class Connection private constructor() {
 
         if (!this.connected) {
             // on vérifie que l'on est bien connecter au serveur et que l'on ai récupéré la session et la signature
-            Log.e(TAG, "Not Connected")
+            //Log.e(TAG, "Not Connected")
             return
         }
-        Log.d("id",id)
+        //Log.d("id",id)
         val encodeses = URLEncoder.encode(this.session, "UTF-8")
         val encodesig = URLEncoder.encode(this.signature, "UTF-8")
         val encodeid = URLEncoder.encode(id, "UTF-8")
@@ -684,20 +683,20 @@ class Connection private constructor() {
 
                         if (status == "OK") {
 
-                            Log.d(TAG, "vente succesful")
+                           // Log.d(TAG, "vente succesful")
                         } else {
-                        Log.e(TAG, "vente: Erreur - $status")
+                       // Log.e(TAG, "vente: Erreur - $status")
                         // popup with market_list Error
                     }
 
                     }
                 }catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                    //Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
 
             },
             { error ->
-                Log.d(TAG, "vente error")
+                //Log.d(TAG, "vente error")
                 error.printStackTrace()
             })
 
@@ -711,10 +710,10 @@ class Connection private constructor() {
 
         if (!this.connected) {
             // on vérifie que l'on est bien connecter au serveur et que l'on ai récupéré la session et la signature
-            Log.e(TAG, "Not Connected")
+          //  Log.e(TAG, "Not Connected")
             return
         }
-        Log.d("id",id)
+       // Log.d("id",id)
         val encodeses = URLEncoder.encode(this.session, "UTF-8")
         val encodesig = URLEncoder.encode(this.signature, "UTF-8")
         val encodeid = URLEncoder.encode(id, "UTF-8")
@@ -734,20 +733,20 @@ class Connection private constructor() {
 
                         if (status == "OK") {
 
-                            Log.d(TAG, "achat succesful")
+                           // Log.d(TAG, "achat succesful")
                         } else {
-                            Log.e(TAG, "Achat: Erreur - $status")
+                           // Log.e(TAG, "Achat: Erreur - $status")
                             // popup with market_list Error
                         }
 
                     }
                 }catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                   // Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
 
             },
             { error ->
-                Log.d(TAG, "reinit_joueur error")
+               // Log.d(TAG, "reinit_joueur error")
                 error.printStackTrace()
             })
 
@@ -757,7 +756,7 @@ class Connection private constructor() {
 
         if (!this.connected) {
             // on vérifie que l'on est bien connecté au serveur et que l'on ai récupérer la session et la signature
-            Log.e(TAG,"Not Connected")
+           // Log.e(TAG,"Not Connected")
             return
         }
 
@@ -783,22 +782,22 @@ class Connection private constructor() {
                         val status = statusNode.textContent.trim()
 
                         if (status == "OK") {
-                            Log.d(TAG, "Creuser: succesful list")
+                           // Log.d(TAG, "Creuser: succesful list")
                             val upNode=doc.getElementsByTagName("UPGRADES").item(0).childNodes
                             val lastId = upgrades.lastOrNull()?.pick_id ?: -1
                             for (i in 0 until upNode.length) {
                                 val node = upNode.item(i)
-                                Log.d("it","Pick")
+                               // Log.d("it","Pick")
                                 if (node.nodeType == Node.ELEMENT_NODE) {
                                     val elem = node as Element
                                     val id = elem.getElementsByTagName("PICKAXE_ID").item(0).textContent.toInt()
-                                    Log.d("idpick",id.toString())
+                                   // Log.d("idpick",id.toString())
                                     if (id > lastId) {
                                         val up = Upgrade(id)
                                         val itNode = elem.getElementsByTagName("ITEMS").item(0).childNodes
                                         val lastId2 = up.items.lastOrNull()?.id?.toInt() ?: -1
                                         for (y in 0 until itNode.length) {
-                                            Log.d("it","item$y")
+                                           // Log.d("it","item$y")
                                             val node2 = itNode.item(y)
                                             if (node2.nodeType == Node.ELEMENT_NODE) {
                                                 val elem2 = node2 as Element
@@ -819,16 +818,16 @@ class Connection private constructor() {
 
                             _upgrad.postValue(this.upgrades)
                         } else {
-                            Log.e(TAG, "Creuser: Erreur - $status")
+                           // Log.e(TAG, "Creuser: Erreur - $status")
                             // popup with creuser Error avec le status attaché
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
+                   // Log.e(TAG, "Erreur lors de la lecture de la réponse XML", e)
                 }
             },
             { error ->
-                Log.d(TAG, "Creuser error")
+               // Log.d(TAG, "Creuser error")
                 error.printStackTrace()
             })
         //

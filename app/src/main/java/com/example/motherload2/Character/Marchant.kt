@@ -1,6 +1,5 @@
 package com.example.motherload2.Character
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
@@ -29,6 +28,6 @@ class Marchant {
     }
     fun updatelive(){
         _offre.postValue(items)
-        Log.d("up",offers.value.toString())
+        //Log.d("up",offers.value.toString())
     }
 }

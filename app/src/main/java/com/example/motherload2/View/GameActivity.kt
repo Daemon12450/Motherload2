@@ -41,7 +41,7 @@ class GameActivity : AppCompatActivity(), MapListener {
     private val updateRunnable = object : Runnable {
         override fun run() {
             connectView.deplacement()
-            handler.postDelayed(this, 15000) // Appelle toutes les 15 secondes
+            handler.postDelayed(this, 15000) // Appelle toutes les 5 secondes
         }
     }
 
@@ -61,11 +61,11 @@ class GameActivity : AppCompatActivity(), MapListener {
 
         mMap = binding.mapView
         mMap.setTileSource(TileSourceFactory.MAPNIK)
-        mMap.mapCenter
         mMap.setMultiTouchControls(true)
         mMap.getLocalVisibleRect(Rect())
 
         mMyLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(this), mMap)
+
         controller = mMap.controller
 
         mMyLocationOverlay.enableMyLocation()
@@ -73,28 +73,29 @@ class GameActivity : AppCompatActivity(), MapListener {
         mMyLocationOverlay.isDrawAccuracyEnabled = true
         mMyLocationOverlay.runOnFirstFix {
             runOnUiThread {
-                controller.setCenter(mMyLocationOverlay.myLocation);
+                controller.setCenter(mMyLocationOverlay.myLocation)
                 controller.animateTo(mMyLocationOverlay.myLocation)
             }
         }
 
         controller.setZoom(16.0)
 
-        Log.e("TAG", "onCreate:in ${controller.zoomIn()}")
-        Log.e("TAG", "onCreate: out  ${controller.zoomOut()}")
+       // Log.e("TAG", "onCreate:in ${controller.zoomIn()}")
+       // Log.e("TAG", "onCreate: out  ${controller.zoomOut()}")
 
         // controller.animateTo(mapPoint)
         mMap.overlays.add(mMyLocationOverlay)
 
         mMap.addMapListener(this)
 
-        Log.d("same ?",connectView.getconnect().toString())
+        //Log.d("same ?",connectView.getconnect().toString())
 
         val buttonShop : Button = findViewById(R.id.shop)
         buttonShop.setOnClickListener {
             val intent = Intent(this, ShopActivity::class.java)
             startActivity(intent)
         }
+
         val buttonDig : Button = findViewById(R.id.dig)
         buttonDig.setOnClickListener {
             connectView.dig()
@@ -120,6 +121,8 @@ class GameActivity : AppCompatActivity(), MapListener {
                 fragmentT.commit()
             }
         }
+
+        Log.d("TAG", "onCreate: mMap initialized")
     }
 
     private fun addMyLocationMarker(latitude: Double, longitude: Double) {
@@ -136,6 +139,8 @@ class GameActivity : AppCompatActivity(), MapListener {
         mMap.invalidate()
 
         connectView.perso.changecood(longitude.toString(), latitude.toString())
+
+        Log.d("TAG", "addMyLocationMarker: Latitude = $latitude, Longitude = $longitude")
     }
 
     override fun onResume() {
@@ -148,11 +153,15 @@ class GameActivity : AppCompatActivity(), MapListener {
 
                 // Ajouter le marqueur avec vos coordonnées
                 addMyLocationMarker(mMyLocationOverlay.myLocation.latitude, mMyLocationOverlay.myLocation.longitude)
+
+                Log.d("TAG", "addMyLocationMarker: ${mMyLocationOverlay.myLocation.latitude}, ${mMyLocationOverlay.myLocation.longitude}")
             }
         }
 
         // L'activity repasse en avant plan : on relance la mise à jour des messages
         handler.post(updateRunnable)
+
+        Log.d("TAG", "onResume: fonction utilisé")
     }
 
     override fun onPause() {
@@ -164,18 +173,24 @@ class GameActivity : AppCompatActivity(), MapListener {
 
         handler.removeCallbacks(updateRunnable)
         super.onPause()
+
+        Log.d("TAG", "onPause: fonction utilisé")
     }
 
     override fun onScroll(event: ScrollEvent?): Boolean {
-        Log.e("TAG", "onCreate:la ${event?.source?.getMapCenter()?.latitude}")
-        Log.e("TAG", "onCreate:lo ${event?.source?.getMapCenter()?.longitude}")
+       // Log.e("TAG", "onCreate:la ${event?.source?.getMapCenter()?.latitude}")
+       // Log.e("TAG", "onCreate:lo ${event?.source?.getMapCenter()?.longitude}")
         //  Log.e("TAG", "onScroll   x: ${event?.x}  y: ${event?.y}", )
         return true
+
+        Log.d("TAG", "onScroll: fonction utilisé")
     }
 
     override fun onZoom(event: ZoomEvent?): Boolean {
-        Log.e("TAG", "onZoom zoom level: ${event?.zoomLevel}   source:  ${event?.source}")
+      //  Log.e("TAG", "onZoom zoom level: ${event?.zoomLevel}   source:  ${event?.source}")
         return false;
+
+        Log.d("TAG", "onZoom: fonction utilisé")
     }
 
     private fun removeMyLocationMarker() {
@@ -184,5 +199,7 @@ class GameActivity : AppCompatActivity(), MapListener {
             myLocationMarker = null
             mMap.invalidate()
         }
+
+        Log.d("TAG", "removeMyLocationMarker: fonction utilisé")
     }
 }

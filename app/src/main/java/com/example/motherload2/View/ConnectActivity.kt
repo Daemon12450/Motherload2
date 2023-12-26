@@ -2,7 +2,6 @@ package com.example.motherload2.View
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -34,7 +33,7 @@ class ConnectActivity : AppCompatActivity() {
             val log = "alewis"//editTextLog.text.toString()
             val pass = "LAt%24yc6@" //editTextPass.text.toString()
             connectView.connectWeb(log,pass)
-            Log.d("connected ?",connectView.getconnect().toString())
+            //Log.d("connected ?",connectView.getconnect().toString())
             if (connectView.getconnect()) {
                 // button ferme avant la fin de la verif donc faut appuyer 2 fois pour l'instant, faut faire un delay ou att que la fonction fini
                 val intent = Intent(this, GameActivity::class.java)

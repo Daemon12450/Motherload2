@@ -27,13 +27,16 @@ class Character (lon:String,lat:String) {
     fun changename(name:String){
         this.name = name
     }
+
     fun changecood(lon: String, lat: String){
         this.lon = lon
         this.lat = lat
     }
+
     fun getlon():String {
         return this.lon
     }
+
     fun getlat():String{
         return this.lat
     }

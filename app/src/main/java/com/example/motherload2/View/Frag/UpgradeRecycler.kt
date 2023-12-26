@@ -1,6 +1,5 @@
 package com.example.motherload2.View.Frag
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,7 @@ class UpgradeRecycler(private val mListener: fragmentUpgrade.OnListFragmentInter
         notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpgradeRecycler.ViewHolder {
-        Log.d("teste","in")
+        //Log.d("teste","in")
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.upgrades, parent, false)
         return ViewHolder(view)

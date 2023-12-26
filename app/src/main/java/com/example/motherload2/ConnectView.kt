@@ -1,6 +1,5 @@
 package com.example.motherload2
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -66,15 +65,15 @@ class ConnectView : ViewModel() {
     }
     fun selectOffer(offers: Offers?){
         _selectedoffers.postValue (offers)
-        Log.d("MsgViewModel","Offre sélectionné : "+offers?.offer_id)
+        //Log.d("MsgViewModel","Offre sélectionné : "+offers?.offer_id)
     }
     fun selectItem(item: Item?){
         _selecteditem.postValue (item)
-        Log.d("MsgViewModel","item sélectionné : "+item?.id)
+        //Log.d("MsgViewModel","item sélectionné : "+item?.id)
     }
     fun selectup(item: Upgrade?){
         _selectedup.postValue (item)
-        Log.d("MsgViewModel","item sélectionné : "+item?.pick_id)
+        //Log.d("MsgViewModel","item sélectionné : "+item?.pick_id)
     }
     fun buy(){
 

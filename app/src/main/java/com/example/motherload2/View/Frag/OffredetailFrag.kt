@@ -1,7 +1,6 @@
 package com.example.motherload2.View.Frag
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.motherload2.Character.Item
 import com.example.motherload2.Character.Offers
 import com.example.motherload2.ConnectView
 import com.example.motherload2.R
@@ -48,7 +46,7 @@ class OffredetailFrag : Fragment() {
     }
 
     fun update(offers: Offers?) {
-        Log.d("NDFrag", "Update called")
+       // Log.d("NDFrag", "Update called")
         if (offers == null) {
             mnameText?.text = ""
             mtypeText?.text = ""

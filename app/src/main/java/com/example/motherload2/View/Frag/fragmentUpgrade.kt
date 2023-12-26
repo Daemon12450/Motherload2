@@ -1,7 +1,6 @@
 package com.example.motherload2.View.Frag
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,7 @@ class fragmentUpgrade : Fragment() {
         connectView.upgrade.observe(viewLifecycleOwner, { item -> mAdapter?.updateUpgrades(item)
         })
         Fragmaent = parentFragmentManager.findFragmentById(R.id.Items) as Recette?
-        Log.d("teste","end")
+        //Log.d("teste","end")
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

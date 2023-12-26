@@ -1,7 +1,5 @@
 package com.example.motherload2.Character
 
-import android.util.Log
-
 class Offers(offer_id:Int,item_id:String,quantite : String, prix:String) {
     internal val offer_id = offer_id
     internal val item_id = item_id
@@ -16,6 +14,6 @@ class Offers(offer_id:Int,item_id:String,quantite : String, prix:String) {
 
     fun setitem(item:Item){
         this.item = item
-        Log.d("nameoff :",this.item.nom)
+        //Log.d("nameoff :",this.item.nom)
     }
 }
