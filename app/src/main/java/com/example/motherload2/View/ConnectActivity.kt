@@ -69,11 +69,11 @@ class ConnectActivity : AppCompatActivity() {
         buttonreinit.setOnClickListener {
             connectView.reinitplayer()
         }
-
+/*
         val buttondig : Button = findViewById(R.id.dig)
         buttondig.setOnClickListener {
             connectView.dig()
-        }
+        }*/
 
         val buttonitem : Button = findViewById(R.id.item)
         buttonitem.setOnClickListener{

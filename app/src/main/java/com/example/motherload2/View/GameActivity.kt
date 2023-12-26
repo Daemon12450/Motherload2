@@ -98,7 +98,7 @@ class GameActivity : AppCompatActivity(), MapListener {
 
         val buttonDig : Button = findViewById(R.id.dig)
         buttonDig.setOnClickListener {
-            connectView.dig()
+            connectView.dig(this)
         }
 
         val buttonInv : Button = findViewById(R.id.inv)
