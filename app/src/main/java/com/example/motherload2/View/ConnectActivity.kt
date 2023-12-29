@@ -11,8 +11,8 @@ import com.example.motherload2.R
 
 class ConnectActivity : AppCompatActivity() {
     /*
-    Activite de teste pour verifier que toute les
-    fonction dappel au srveur fonctionne correctement mais nest plus utiliser
+    Activitée de test pour vérifier que toutes les
+    fonctions d'appel au serveur fonctionnent correctement mais n'est plus utilisée
     */
 
     private lateinit var connectView: ConnectView
@@ -35,7 +35,7 @@ class ConnectActivity : AppCompatActivity() {
             connectView.connectWeb(log,pass)
             //Log.d("connected ?",connectView.getconnect().toString())
             if (connectView.getconnect()) {
-                // button ferme avant la fin de la verif donc faut appuyer 2 fois pour l'instant, faut faire un delay ou att que la fonction fini
+                // button ferme avant la fin de la vérif donc il faut appuyer 2 fois pour l'instant, faut faire un delay ou att que la fonction fini
                 val intent = Intent(this, GameActivity::class.java)
 
                 startActivity(intent)
@@ -69,11 +69,6 @@ class ConnectActivity : AppCompatActivity() {
         buttonreinit.setOnClickListener {
             connectView.reinitplayer()
         }
-/*
-        val buttondig : Button = findViewById(R.id.dig)
-        buttondig.setOnClickListener {
-            connectView.dig()
-        }*/
 
         val buttonitem : Button = findViewById(R.id.item)
         buttonitem.setOnClickListener{

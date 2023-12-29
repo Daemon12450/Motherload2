@@ -1,6 +1,5 @@
 package com.example.motherload2.View
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,7 +13,7 @@ import com.example.motherload2.View.Frag.OffredetailFrag
 
 class ShopActivity : AppCompatActivity(){
     /*
-    activite qui contien les offres du marchant permet de les acheter aussi et de voir les detail
+    activitée qui contient les offres du marchant permet de les acheter et de voir les détails des objets
      */
 
     private lateinit var connectView: ConnectView
@@ -31,7 +30,7 @@ class ShopActivity : AppCompatActivity(){
             connectView.market()
             handler.postDelayed(this, 15000) // Appelle toutes les 15 secondes
 
-            // on ajoute si y a des nouveau mais on enleve pas si y en moin
+            // on ajoute si il y a des nouveau mais on enlève pas si il y en a moins
         }
     }
 
@@ -50,13 +49,13 @@ class ShopActivity : AppCompatActivity(){
     }
     override fun onResume() {
         super.onResume()
-        // L'activity repasse en avant plan : on relance la mise à jour des messages
+        // L'activity repasse en premier plan : on relance la mise à jour des messages
         handler.post(updateRunnable)
     }
 
     override fun onPause() {
         // L'activity passe en arrière-plan : on coupe la mise à jour des messages :
-        // Pour ce faire, on vire de la file d'attente le job qui était posté.
+        // Pour ce faire, on enlève de la file d'attente le job qui était posté.
         handler.removeCallbacks(updateRunnable)
         super.onPause()
     }

@@ -3,7 +3,6 @@ package com.example.motherload2.View
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.SharedMemory
 import android.text.SpannableStringBuilder
 import android.widget.Button
 import android.widget.CheckBox
@@ -41,8 +40,8 @@ class MainActivity : AppCompatActivity() {
         connectButton.setOnClickListener {
             connectView.connectWeb(log.text.toString(),pass.text.toString())
             if (connectView.getconnect()) {
-                if (!checkBox.isChecked){// verifi si lutilisateur veut oublier ses log
-                    /*on ecrit dans un fichier les log + un chec quon vas verifier a louerture de lapp*/
+                if (!checkBox.isChecked){// verifie si l'utilisateur veut oublier ses log
+                    /*on écrit dans un fichier les log + un check que l'on va vérifier a l'ouverture de l'app*/
                     val pref = getSharedPreferences("checkbox", MODE_PRIVATE)
                     val edit = pref.edit()
                     edit.putString("remember","true")
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        /*deux bouton qui permet de changer la langue de lapp*/
+        /*deux boutons qui permettent de changer la langue de l'app*/
         val lang = LanguageManager(this)
         val fr : ImageButton = findViewById(R.id.Fr)
         fr.setOnClickListener{

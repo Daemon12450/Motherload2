@@ -12,7 +12,7 @@ class App : Application() {
             private set
     }
 
-    // On peut accéder à cet attribut depuis l'extérieur, par contre, on ne la modifie que depuis
+    // On peut accéder à cet attribut depuis l'extérieur, par contre, on ne le modifie que depuis
     // cette classe.
     var requestQueue: RequestQueue? = null
         private set

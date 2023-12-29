@@ -10,14 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.motherload2.ConnectView
 import com.example.motherload2.R
-import com.example.motherload2.View.Frag.OffersFragment
-import com.example.motherload2.View.Frag.OffredetailFrag
 import com.example.motherload2.View.Frag.SacFragment
 import com.example.motherload2.View.Frag.fragmentUpgrade
 
 class InvActivity: AppCompatActivity() {
     /*
-    activiter qui contien linventaire du personnage
+    activiter qui contient l'inventaire du personnage
      */
     private lateinit var connectView: ConnectView
     private var sacFragmaent : SacFragment? = null
@@ -28,7 +26,7 @@ class InvActivity: AppCompatActivity() {
     // 15 secondes au thread principal. On récupère son handler ici...
     private val handler = Handler(Looper.getMainLooper())
     // ... Et voici le runnable que l'on va lui donner. Il déclenche la mise à jour et se programme
-    // lui-même à nouveau pour être exécuté dnas 15 secondes.
+    // lui-même à nouveau pour être exécuté dans 15 secondes.
     private val updateRunnable = object : Runnable {
         override fun run() {
             connectView.statusplayer()
@@ -74,13 +72,13 @@ class InvActivity: AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        // L'activity repasse en avant plan : on relance la mise à jour des messages
+        // L'activity repasse en premier plan : on relance la mise à jour des messages
         handler.post(updateRunnable)
     }
 
     override fun onPause() {
         // L'activity passe en arrière-plan : on coupe la mise à jour des messages :
-        // Pour ce faire, on vire de la file d'attente le job qui était posté.
+        // Pour ce faire, on enlève de la file d'attente le job qui était posté.
         handler.removeCallbacks(updateRunnable)
         super.onPause()
     }

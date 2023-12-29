@@ -14,7 +14,7 @@ import com.example.motherload2.View.GameActivity
 class ConnectView : ViewModel() {
     /*
 
-    Classe qui vas se changer de faire le lien entre les autre class et la class principal de communication avec le web
+    Classe qui se charge de faire le lien entre les autres classes et la classe principal de communication avec le web
 
      */
     private val repository = Connection.getInstance()
